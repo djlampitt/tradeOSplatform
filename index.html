@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TradesOS Platform — AI Operations for Skilled Trades & Pharma Manufacturing</title>
+<style>
+:root{
+  --bg:#080b10;--surface:#0f1318;--card:#141920;--border:#1c2333;
+  --text:#e2e8f0;--muted:#64748b;--dim:#94a3b8;
+  --orange:#f97316;--blue:#3b82f6;--green:#22c55e;
+  --amber:#f59e0b;--pipe:#8b5cf6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+     min-height:100vh;display:flex;flex-direction:column}
+
+/* ── nav ── */
+nav{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:14px 40px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:10
+}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;border-radius:8px;
+           display:flex;align-items:center;justify-content:center;
+           font-size:14px;font-weight:900;color:#fff}
+.logo-mark.orange{background:linear-gradient(135deg,#f97316,#c2410c)}
+.logo-name{font-size:16px;font-weight:700;color:#fff}
+.logo-tag{font-size:10px;color:var(--muted);margin-top:1px;letter-spacing:.3px}
+nav .spacer{flex:1}
+.nav-contact{font-size:12px;color:var(--muted);padding:6px 14px;border:1px solid var(--border);
+              border-radius:6px;cursor:pointer;text-decoration:none;transition:color .2s}
+.nav-contact:hover{color:var(--text);border-color:var(--dim)}
+
+/* ── hero ── */
+.hero{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:80px 40px 60px;
+  background:radial-gradient(ellipse at 50% 0%, #0f1e35 0%, var(--bg) 70%)
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;
+  color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:28px
+}
+.hero-eyebrow .dot{width:6px;height:6px;background:var(--green);border-radius:50%;
+                    animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.15;
+   color:#fff;max-width:700px;margin:0 auto 20px;letter-spacing:-1px}
+h1 span.orange{color:var(--orange)}
+h1 span.blue{color:var(--blue)}
+.hero-sub{font-size:17px;color:var(--dim);max-width:560px;margin:0 auto 48px;line-height:1.7}
+
+/* ── product cards ── */
+.products{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+  max-width:860px;width:100%;margin:0 auto;padding:0 20px 80px
+}
+.product-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:36px 32px;text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;transition:transform .2s,border-color .2s;
+  display:flex;flex-direction:column
+}
+.product-card:hover{transform:translateY(-4px)}
+.product-card.trades:hover{border-color:var(--orange)}
+.product-card.pharma:hover{border-color:var(--blue)}
+.product-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0
+}
+.product-card.trades::before{background:linear-gradient(90deg,var(--orange),var(--amber))}
+.product-card.pharma::before{background:linear-gradient(90deg,var(--blue),var(--pipe))}
+
+.card-icon{
+  width:52px;height:52px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:900;color:#fff;margin-bottom:20px;flex-shrink:0
+}
+.card-icon.orange{background:linear-gradient(135deg,#f97316,#c2410c)}
+.card-icon.blue{background:linear-gradient(135deg,#3b82f6,#6d28d9)}
+
+.card-name{font-size:20px;font-weight:800;color:#fff;margin-bottom:8px}
+.card-tagline{font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.5}
+
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+.tag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;
+     text-transform:uppercase;letter-spacing:.4px}
+.tag.orange{background:#431407;color:#fb923c;border:1px solid #9a3412}
+.tag.blue{background:#1e3a5f;color:#93c5fd;border:1px solid #1d4ed8}
+.tag.purple{background:#2e1065;color:#c4b5fd;border:1px solid #6d28d9}
+.tag.green{background:#064e3b;color:#6ee7b7;border:1px solid #065f46}
+.tag.amber{background:#451a03;color:#fde68a;border:1px solid #92400e}
+
+.card-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:32px;flex:1}
+.card-features li{font-size:12px;color:var(--dim);display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+.card-features li::before{content:'→';color:var(--muted);flex-shrink:0;margin-top:1px}
+
+.card-cta{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 24px;border-radius:8px;font-size:13px;font-weight:700;
+  transition:opacity .2s;cursor:pointer;border:none;text-decoration:none
+}
+.card-cta:hover{opacity:.88}
+.card-cta.orange{background:var(--orange);color:#fff}
+.card-cta.blue{background:var(--blue);color:#fff}
+.card-cta span{font-size:16px}
+
+/* ── footer ── */
+footer{
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:24px 40px;display:flex;align-items:center;justify-content:space-between
+}
+.footer-left{font-size:12px;color:var(--muted)}
+.footer-left strong{color:var(--dim)}
+.footer-right{font-size:11px;color:var(--muted)}
+.footer-right a{color:var(--muted);text-decoration:none}
+.footer-right a:hover{color:var(--dim)}
+
+/* ── responsive ── */
+@media(max-width:640px){
+  .products{grid-template-columns:1fr;padding:0 16px 48px}
+  nav{padding:12px 20px}
+  .hero{padding:60px 20px 40px}
+  footer{flex-direction:column;gap:8px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark orange">⚡</div>
+    <div>
+      <div class="logo-name">TradesOS Platform</div>
+      <div class="logo-tag">AI Operations for Skilled Trades & Pharma Manufacturing</div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <a class="nav-contact" href="mailto:demo@tradesos.ai">Contact Us</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">
+    <div class="dot"></div>
+    Live Demo Available
+  </div>
+  <h1>One platform.<br><span class="orange">Trades operations.</span><br><span class="blue">Pharma compliance.</span></h1>
+  <p class="hero-sub">Eight AI models, one shared event bus, zero integration glue — purpose-built for skilled trades and pharmaceutical manufacturing operations.</p>
+</div>
+
+<div class="products">
+
+  <!-- TradesOS -->
+  <a class="product-card trades" href="site_tradesOS.html">
+    <div class="card-icon orange">⚡</div>
+    <div class="card-name">TradesOS</div>
+    <div class="card-tagline">AI-powered operations platform for advanced manufacturing and skilled trades — welding, sheet metal, plumbing, electrical, and HVAC.</div>
+    <div class="card-tags">
+      <span class="tag orange">Welding</span>
+      <span class="tag orange">Sheet Metal</span>
+      <span class="tag amber">HVAC</span>
+      <span class="tag green">Plumbing</span>
+      <span class="tag purple">Electrical</span>
+    </div>
+    <ul class="card-features">
+      <li>WeldEye: in-process defect detection and root-cause attribution</li>
+      <li>FaultLine: work order generation with cost gates and approval tiers</li>
+      <li>CrewMatch: skill-code and clearance-aware workforce dispatch</li>
+      <li>ChainSight: supply chain risk and part lot genealogy</li>
+      <li>SkillForge: training driven by production quality data</li>
+      <li>ProjectPilot: pre-project feasibility with 3-option analysis</li>
+    </ul>
+    <div class="card-cta orange"><span>▶</span> View Live Demo</div>
+  </a>
+
+  <!-- Pharma Facilities OS -->
+  <a class="product-card pharma" href="site_pharmaOS.html">
+    <div class="card-icon blue">Rₓ</div>
+    <div class="card-name">Pharma Facilities OS</div>
+    <div class="card-tagline">HQ command center for managing multiple pharmaceutical manufacturing facilities — with cGMP compliance, deviation tracking, and IQ/OQ/PQ coordination.</div>
+    <div class="card-tags">
+      <span class="tag blue">cGMP</span>
+      <span class="tag blue">ASME BPE</span>
+      <span class="tag purple">IQ/OQ/PQ</span>
+      <span class="tag amber">FDA 21 CFR</span>
+      <span class="tag green">WFI Loops</span>
+    </div>
+    <ul class="card-features">
+      <li>Multi-site facility status grid — all client sites in one view</li>
+      <li>PharmaWeldEye: ASME BPE SF4 Ra limit enforcement for WFI service</li>
+      <li>cGMP deviation management from detection to CAPA to closure</li>
+      <li>HQ Fabrication Queue: weld spools, 3D-printed fittings, CNC parts with MTR documentation</li>
+      <li>IQ/OQ/PQ phase tracking with QA Manager co-sign gates</li>
+      <li>FDA documentation package assembled automatically</li>
+    </ul>
+    <div class="card-cta blue"><span>▶</span> View Live Demo</div>
+  </a>
+
+</div>
+
+<footer>
+  <div class="footer-left"><strong>TradesOS Platform</strong> · Built on the Anthropic API · Python · Zero infrastructure dependencies</div>
+  <div class="footer-right"><a href="mailto:demo@tradesos.ai">demo@tradesos.ai</a></div>
+</footer>
+
+</body>
+</html>
