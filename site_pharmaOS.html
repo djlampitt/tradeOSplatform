@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharma Facilities OS — HQ Command Center for Pharmaceutical Manufacturing</title>
+<style>
+  :root {
+    --bg: #060910;
+    --surface: #0e1320;
+    --card: #131825;
+    --border: #1a2236;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --dim: #94a3b8;
+    --accent: #3b82f6;
+    --accent-d: #1d4ed8;
+    --clean: #06b6d4;
+    --ok: #22c55e;
+    --warn: #f59e0b;
+    --crit: #ef4444;
+    --pipe: #8b5cf6;
+    --reg: #f59e0b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── TYPOGRAPHY ─── */
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; }
+  h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.1; }
+  h2 { font-size: clamp(1.5rem, 2.5vw, 2.25rem); }
+  h3 { font-size: 1.1rem; }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--clean);
+    margin-bottom: 0.75rem;
+  }
+
+  /* ─── LAYOUT ─── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 5rem 0; }
+  .section-sm { padding: 3rem 0; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(6, 9, 16, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    font-style: normal;
+  }
+
+  .nav-wordmark { display: flex; flex-direction: column; }
+  .nav-name { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .nav-sub { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.05em; }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.875rem;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #2563eb; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-lg { padding: 0.8rem 1.75rem; font-size: 0.95rem; border-radius: 8px; }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: 6rem 0 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-left { position: relative; z-index: 1; }
+  .hero-ctas { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+  .hero-trust {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .hero-subtext {
+    margin-top: 1.25rem;
+    font-size: 1rem;
+    color: var(--dim);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* ─── HERO MOCKUP ─── */
+  .hero-right { position: relative; z-index: 1; }
+
+  .mockup-shell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.1);
+  }
+
+  .mockup-bar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mockup-title {
+    margin-left: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .mockup-body { display: flex; gap: 1px; background: var(--border); }
+  .mockup-left { flex: 1; background: var(--surface); padding: 1rem; }
+  .mockup-right-feed { width: 180px; background: var(--card); padding: 0.75rem; }
+
+  .mockup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+
+  .mcard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem;
+  }
+
+  .mcard-name { font-size: 0.65rem; font-weight: 700; color: var(--text); }
+  .mcard-sub { font-size: 0.55rem; color: var(--muted); margin-top: 1px; }
+  .mcard-status { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.35rem; }
+
+  .mpill {
+    font-size: 0.5rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .mpill-ok { background: rgba(34,197,94,0.15); color: var(--ok); }
+  .mpill-warn { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .mpill-crit { background: rgba(239,68,68,0.15); color: var(--crit); }
+
+  .mcard-dev { font-size: 0.5rem; color: var(--muted); margin-top: 0.3rem; }
+
+  .feed-item {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .feed-item:last-child { border-bottom: none; }
+  .feed-model { font-size: 0.5rem; font-weight: 700; color: var(--accent); }
+  .feed-text { font-size: 0.5rem; color: var(--dim); margin-top: 1px; line-height: 1.4; }
+
+  /* ─── METRICS STRIP ─── */
+  .metrics-strip {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .metric-cell {
+    background: var(--surface);
+    padding: 1.5rem 2rem;
+    text-align: center;
+  }
+
+  .metric-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+
+  /* ─── PROBLEM SECTION ─── */
+  .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+
+  .problem-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .problem-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--crit), rgba(239,68,68,0));
+  }
+
+  .problem-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(239,68,68,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .problem-title { font-size: 1rem; margin-bottom: 0.5rem; }
+  .problem-text { font-size: 0.875rem; color: var(--dim); line-height: 1.65; }
+
+  /* ─── PLATFORM FLOW ─── */
+  .flow-diagram {
+    margin-top: 3rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+  }
+
+  .flow-tier { margin-bottom: 1.5rem; }
+  .flow-tier-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .flow-hq {
+    background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(29,78,216,0.1));
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+  }
+
+  .flow-hq-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+  .flow-hq-sub { font-size: 0.8rem; color: var(--dim); margin-top: 0.25rem; }
+
+  .flow-arrows {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin: 0.75rem 0;
+    color: var(--muted);
+    font-size: 1.2rem;
+  }
+
+  .flow-models {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .flow-model-badge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.35rem;
+    text-align: center;
+    position: relative;
+    cursor: default;
+    transition: border-color 0.2s;
+  }
+
+  .flow-model-badge:hover { border-color: var(--accent); }
+  .flow-model-badge:hover .flow-tooltip { opacity: 1; visibility: visible; }
+
+  .flow-model-icon { font-size: 1.25rem; }
+  .flow-model-name { font-size: 0.55rem; font-weight: 700; color: var(--dim); margin-top: 0.25rem; line-height: 1.3; }
+
+  .flow-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.65rem;
+    color: var(--text);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .flow-spine {
+    background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05));
+    border: 1px solid rgba(139,92,246,0.4);
+    border-radius: 10px;
+    padding: 0.6rem;
+    text-align: center;
+    grid-column: 4 / 6;
+  }
+
+  .flow-spine-name { font-size: 0.6rem; font-weight: 800; color: var(--pipe); }
+  .flow-spine-sub { font-size: 0.5rem; color: var(--muted); }
+
+  .flow-facilities {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+
+  .flow-facility {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  .flow-facility-icon { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .flow-facility-name { font-size: 0.65rem; font-weight: 700; color: var(--dim); }
+  .flow-facility-team { font-size: 0.55rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ─── CAPABILITIES GRID ─── */
+  .caps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+
+  .cap-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .cap-card:hover {
+    border-color: rgba(59,130,246,0.3);
+    box-shadow: 0 0 24px rgba(59,130,246,0.06);
+  }
+
+  .cap-card.spine-card { border-color: rgba(139,92,246,0.3); }
+  .cap-card.spine-card:hover { border-color: rgba(139,92,246,0.5); box-shadow: 0 0 24px rgba(139,92,246,0.08); }
+
+  .cap-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .cap-name { font-size: 0.875rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+  .cap-card.spine-card .cap-name { color: var(--pipe); }
+  .cap-desc { font-size: 0.82rem; color: var(--dim); line-height: 1.65; }
+
+  /* ─── COMPLIANCE ─── */
+  .compliance-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-top: 3rem; }
+
+  .comp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .comp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--reg);
+    letter-spacing: 0.05em;
+    align-self: flex-start;
+  }
+
+  .comp-title { font-size: 0.95rem; font-weight: 700; }
+  .comp-text { font-size: 0.8rem; color: var(--dim); line-height: 1.65; }
+
+  /* ─── DEMO SECTION ─── */
+  #demo {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .demo-header { text-align: center; margin-bottom: 2.5rem; }
+  .demo-subtext { color: var(--dim); font-size: 1rem; margin-top: 0.75rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+  /* Scenario tabs */
+  .scenario-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--dim);
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { border-color: var(--accent); color: var(--text); }
+  .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* Demo controls */
+  .demo-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .speed-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .speed-control input[type=range] {
+    width: 100px;
+    accent-color: var(--accent);
+  }
+
+  /* Demo split view */
+  .demo-split {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Facility cards */
+  .facility-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+  .fac-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem;
+    transition: border-color 0.4s;
+  }
+
+  .fac-card.status-ok { border-left: 3px solid var(--ok); }
+  .fac-card.status-warn { border-left: 3px solid var(--warn); }
+  .fac-card.status-crit { border-left: 3px solid var(--crit); }
+
+  .fac-name { font-size: 0.78rem; font-weight: 700; color: var(--text); }
+  .fac-type { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+
+  .fac-status-row { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.5rem; }
+
+  .status-pill {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .pill-ok { background: rgba(34,197,94,0.15); color: var(--ok); }
+  .pill-warn { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .pill-crit { background: rgba(239,68,68,0.15); color: var(--crit); }
+
+  .fac-devs { font-size: 0.65rem; color: var(--muted); margin-top: 0.35rem; }
+  .fac-team { font-size: 0.6rem; color: var(--dim); margin-top: 2px; font-style: italic; }
+
+  /* Activity feed */
+  .activity-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .activity-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .activity-title { font-size: 0.8rem; font-weight: 700; }
+
+  .activity-feed {
+    overflow-y: auto;
+    max-height: 380px;
+    padding: 0.5rem;
+  }
+
+  .activity-feed::-webkit-scrollbar { width: 4px; }
+  .activity-feed::-webkit-scrollbar-track { background: transparent; }
+  .activity-feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .event-row {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.65rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    animation: fadeSlideIn 0.4s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .event-step {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .event-body { flex: 1; min-width: 0; }
+  .event-model { font-size: 0.65rem; font-weight: 700; }
+  .event-desc { font-size: 0.78rem; color: var(--text); margin-top: 1px; line-height: 1.45; }
+  .event-detail { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+
+  .event-badge {
+    font-size: 0.55rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 0.35rem;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+  }
+  .badge-crit { background: rgba(239,68,68,0.15); color: var(--crit); }
+  .badge-warn { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .badge-ok { background: rgba(34,197,94,0.15); color: var(--ok); }
+  .badge-info { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .badge-reg { background: rgba(245,158,11,0.1); color: var(--reg); border: 1px solid rgba(245,158,11,0.3); }
+  .badge-pipe { background: rgba(139,92,246,0.15); color: var(--pipe); }
+
+  .event-model-weldeye { color: #06b6d4; }
+  .event-model-fault { color: #ef4444; }
+  .event-model-crew { color: #22c55e; }
+  .event-model-chain { color: #8b5cf6; }
+  .event-model-skill { color: #f59e0b; }
+  .event-model-pilot { color: #3b82f6; }
+  .event-model-project { color: #a78bfa; }
+  .event-model-fab { color: #f97316; }
+  .event-model-hq { color: #94a3b8; }
+
+  /* KPI strip */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .kpi-cell {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+  }
+
+  .kpi-val { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; }
+  .kpi-lbl { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+
+  .quote-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 1.75rem;
+    position: relative;
+  }
+
+  .quote-mark {
+    font-size: 3rem;
+    color: var(--accent);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-family: Georgia, serif;
+  }
+
+  .quote-text { font-size: 0.92rem; color: var(--text); line-height: 1.7; font-style: italic; }
+  .quote-attribution { margin-top: 1.25rem; }
+  .quote-name { font-size: 0.82rem; font-weight: 700; color: var(--accent); }
+  .quote-role { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .quote-note { font-size: 0.65rem; color: var(--border); margin-top: 4px; }
+
+  /* ─── CTA SECTION ─── */
+  .cta-section {
+    background: linear-gradient(135deg, #0d1b3e 0%, #0a1628 50%, #060c1a 100%);
+    border-top: 1px solid rgba(59,130,246,0.2);
+    border-bottom: 1px solid rgba(59,130,246,0.2);
+    padding: 5rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title { font-size: clamp(1.5rem, 3vw, 2rem); max-width: 600px; margin: 0 auto 0.75rem; }
+  .cta-sub { color: var(--dim); margin-bottom: 2rem; }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  .cta-stack {
+    margin-top: 2rem;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 3rem 0 2rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .footer-logo-col .nav-logo { margin-bottom: 0.75rem; }
+  .footer-tagline { font-size: 0.82rem; color: var(--muted); line-height: 1.6; max-width: 260px; }
+
+  .footer-col-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* ─── UTILITIES ─── */
+  .text-center { text-align: center; }
+  .text-accent { color: var(--accent); }
+  .text-clean { color: var(--clean); }
+  .text-pipe { color: var(--pipe); }
+  .mt-1 { margin-top: 0.5rem; }
+  .mt-2 { margin-top: 1rem; }
+  .mt-3 { margin-top: 1.5rem; }
+  .mb-2 { margin-bottom: 1rem; }
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="logo-mark">R<sub style="font-size:0.6em">x</sub></div>
+      <div class="nav-wordmark">
+        <span class="nav-name">Pharma Facilities OS</span>
+        <span class="nav-sub">by TradesOS</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#compliance">Compliance</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#demo" class="btn btn-primary" style="padding:0.45rem 1rem;font-size:0.8rem;">Request Demo</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ HERO ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="eyebrow">Multi-Site Pharmaceutical Facility Management</div>
+        <h1>HQ command.<br>Field teams dispatched.<br>Deviations closed.</h1>
+        <p class="hero-subtext">One platform for managing multiple pharmaceutical manufacturing facilities from a single headquarters — with real-time cGMP deviation tracking, orbital weld qualification, IQ/OQ/PQ coordination, and FDA documentation packages built automatically.</p>
+        <div class="hero-ctas">
+          <a href="#demo" class="btn btn-primary btn-lg">▶ See Live Demo</a>
+          <a href="#compliance" class="btn btn-outline btn-lg">Compliance Overview</a>
+        </div>
+        <div class="hero-trust">ASME BPE &nbsp;·&nbsp; cGMP &nbsp;·&nbsp; 21 CFR 211 &nbsp;·&nbsp; FDA 21 CFR Part 11 &nbsp;·&nbsp; IQ/OQ/PQ</div>
+      </div>
+
+      <div class="hero-right">
+        <div class="mockup-shell">
+          <div class="mockup-bar">
+            <div class="mockup-dot" style="background:#ef4444"></div>
+            <div class="mockup-dot" style="background:#f59e0b"></div>
+            <div class="mockup-dot" style="background:#22c55e"></div>
+            <span class="mockup-title">PHARMA FACILITIES OS — HQ COMMAND CENTER</span>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-left">
+              <div style="font-size:0.55rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:0.5rem;">FACILITY STATUS — 4 SITES</div>
+              <div class="mockup-grid">
+                <div class="mcard">
+                  <div class="mcard-name">BioGen Therapeutics</div>
+                  <div class="mcard-sub">ISO 5 · WFI Loop</div>
+                  <div class="mcard-status"><div class="mpill mpill-ok">ON TRACK</div></div>
+                  <div class="mcard-dev">0 open deviations</div>
+                </div>
+                <div class="mcard">
+                  <div class="mcard-name">Novavax Fill-Finish</div>
+                  <div class="mcard-sub">ISO 6 · Line 3</div>
+                  <div class="mcard-status"><div class="mpill mpill-warn">MONITOR</div></div>
+                  <div class="mcard-dev">2 open deviations</div>
+                </div>
+                <div class="mcard">
+                  <div class="mcard-name">MedTech Sterile</div>
+                  <div class="mcard-sub">WFI Loop · 483</div>
+                  <div class="mcard-status"><div class="mpill mpill-crit">ACTION REQ</div></div>
+                  <div class="mcard-dev">4 open deviations</div>
+                </div>
+                <div class="mcard">
+                  <div class="mcard-name">CellTech Bioreactors</div>
+                  <div class="mcard-sub">ISO 7 · WFI Issue</div>
+                  <div class="mcard-status"><div class="mpill mpill-warn">MONITOR</div></div>
+                  <div class="mcard-dev">1 open deviation</div>
+                </div>
+              </div>
+            </div>
+            <div class="mockup-right-feed">
+              <div style="font-size:0.5rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:0.4rem;">LIVE EVENTS</div>
+              <div class="feed-item">
+                <div class="feed-model">PharmaWeldEye</div>
+                <div class="feed-text">WFI-ID-04-B REJECTED — Ra 0.71 µm exceeds SF4 limit</div>
+              </div>
+              <div class="feed-item">
+                <div class="feed-model" style="color:var(--crit)">PharmaFaultLine</div>
+                <div class="feed-text">DEV-2251 opened — WFI loop isolated at CellTech</div>
+              </div>
+              <div class="feed-item">
+                <div class="feed-model" style="color:var(--ok)">PharmaCrewMatch</div>
+                <div class="feed-text">Rivera dispatched — BPE_QUAL + cGMP verified</div>
+              </div>
+              <div class="feed-item">
+                <div class="feed-model" style="color:var(--pipe)">FabQueue</div>
+                <div class="feed-text">FAB-0882 queued — 316L BPE spool, MTR held</div>
+              </div>
+              <div class="feed-item">
+                <div class="feed-model" style="color:var(--warn)">PharmaSkillForge</div>
+                <div class="feed-text">Rivera re-qual triggered — cert expired 60d ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ METRICS ═══ -->
+<div class="metrics-strip">
+  <div class="container">
+    <div class="metrics-grid">
+      <div class="metric-cell">
+        <div class="metric-num">$750B+</div>
+        <div class="metric-label">Global pharmaceutical manufacturing market</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">9</div>
+        <div class="metric-label">AI models, one pharma spine</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">6</div>
+        <div class="metric-label">Client facility types supported</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">100%</div>
+        <div class="metric-label">FDA 21 CFR documentation coverage</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">&lt;4hr</div>
+        <div class="metric-label">Weld rejection to re-qual plan + part order</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PROBLEM ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">The Problem</div>
+    <h2>Pharma facility compliance is expensive, fragmented, and manually intensive</h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">🗂</div>
+        <h3 class="problem-title">No single view of compliance across sites</h3>
+        <p class="problem-text">Site managers use email, spreadsheets, and siloed CMMS to track deviations. One missed CAPA costs more than the platform. HQ has no real-time visibility until the weekly report arrives — by which time the deviation has compounded.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">⏱</div>
+        <h3 class="problem-title">Field team deployment is reactive</h3>
+        <p class="problem-text">Teams dispatch when things break, not when cGMP signals say they're about to break. Every day a cleanroom is offline costs $2,000+ in downtime — and manual scheduling means the right credential never arrives with the right person.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">📋</div>
+        <h3 class="problem-title">Qualification paperwork is a bottleneck</h3>
+        <p class="problem-text">IQ/OQ/PQ protocols, weld maps, MTR packages, and FDA documentation are assembled manually by QA staff. One missing document delays a product release. One out-of-date weld map triggers a 483 observation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ PLATFORM ═══ -->
+<section class="section" id="platform" style="padding-top:0;">
+  <div class="container">
+    <div class="eyebrow">How It Works</div>
+    <h2>HQ sees everything. Field teams know exactly what to do.</h2>
+
+    <div class="flow-diagram">
+      <!-- Tier 1: HQ -->
+      <div class="flow-tier">
+        <div class="flow-tier-label">Tier 1 — HQ Command Center</div>
+        <div class="flow-hq">
+          <div class="flow-hq-title">HQ Command Center</div>
+          <div class="flow-hq-sub">Receives all facility signals · Coordinates dispatch · Holds fabrication queue · Authorizes capital spend · Assembles FDA documentation</div>
+        </div>
+      </div>
+
+      <div class="flow-arrows">↕ &nbsp; ↕ &nbsp; ↕ &nbsp; ↕ &nbsp; ↕ &nbsp; ↕ &nbsp; ↕ &nbsp; ↕</div>
+
+      <!-- Tier 2: AI Models -->
+      <div class="flow-tier">
+        <div class="flow-tier-label">Tier 2 — AI Model Layer (9 models · PharmaSpine backbone)</div>
+        <div class="flow-models">
+          <div class="flow-model-badge">
+            <div class="flow-model-icon">👁</div>
+            <div class="flow-model-name">PharmaWeldEye</div>
+            <div class="flow-tooltip">ASME BPE orbital weld inspection — enforces Ra limits per SF category</div>
+          </div>
+          <div class="flow-model-badge">
+            <div class="flow-model-icon">⚡</div>
+            <div class="flow-model-name">PharmaFaultLine</div>
+            <div class="flow-tooltip">Fault triage at $145/hr pharma labor rate — opens cGMP deviations automatically</div>
+          </div>
+          <div class="flow-model-badge">
+            <div class="flow-model-icon">👥</div>
+            <div class="flow-model-name">PharmaCrewMatch</div>
+            <div class="flow-tooltip">Credential-first dispatch — cGMP clearance is a hard gate, never stretched</div>
+          </div>
+          <div class="flow-model-badge flow-spine">
+            <div class="flow-model-name" style="font-size:0.65rem;color:var(--pipe);font-weight:800;">PharmaSpine</div>
+            <div style="font-size:0.5rem;color:var(--muted);">11 pharma event topics</div>
+            <div class="flow-tooltip">Integration backbone: Deviation, FabOrder, FacilityProfile, MTRPackage entities</div>
+          </div>
+          <div class="flow-model-badge">
+            <div class="flow-model-icon">🔗</div>
+            <div class="flow-model-name">PharmaChainSight</div>
+            <div class="flow-tooltip">MTR verification against ASME BPE limits — lot genealogy traces bad heat numbers</div>
+          </div>
+          <div class="flow-model-badge">
+            <div class="flow-model-icon">🎓</div>
+            <div class="flow-model-name">PharmaSkillForge</div>
+            <div class="flow-tooltip">6-month BPE requalification cycles — surfaces cert expiry before crew dispatch</div>
+          </div>
+          <div class="flow-model-badge">
+            <div class="flow-model-icon">🛡</div>
+            <div class="flow-model-name">PharmaPilotCheck</div>
+            <div class="flow-tooltip">IQ/OQ/PQ acceptance requires QA Manager co-sign — regulatory gate, not just competency</div>
+          </div>
+          <div class="flow-model-badge">
+            <div class="flow-model-icon">📊</div>
+            <div class="flow-model-name">PharmaProjectPilot</div>
+            <div class="flow-tooltip">IQ→OQ→PQ phase tracking with FDA documentation package assembly</div>
+          </div>
+        </div>
+        <div style="margin-top:0.5rem;">
+          <div class="flow-model-badge" style="display:inline-flex;gap:0.5rem;padding:0.5rem 0.75rem;align-items:center;width:auto;">
+            <div class="flow-model-icon">🏭</div>
+            <div class="flow-model-name" style="font-size:0.65rem;color:var(--pipe)">FabQueue</div>
+            <div class="flow-tooltip">HQ fabrication queue for weld spools, 3D-printed fittings, CNC parts — MTR hold enforced</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-arrows">↕ &nbsp; ↕ &nbsp; ↕ &nbsp; ↕</div>
+
+      <!-- Tier 3: Facilities -->
+      <div class="flow-tier">
+        <div class="flow-tier-label">Tier 3 — Facility Sites (Field Teams)</div>
+        <div class="flow-facilities">
+          <div class="flow-facility">
+            <div class="flow-facility-icon">🧬</div>
+            <div class="flow-facility-name">BioGen Therapeutics</div>
+            <div class="flow-facility-team">ISO 5 · WFI Loop · Team: Rivera</div>
+          </div>
+          <div class="flow-facility">
+            <div class="flow-facility-icon">💊</div>
+            <div class="flow-facility-name">Novavax Fill-Finish</div>
+            <div class="flow-facility-team">ISO 6 · Fill Line 3 · Team: Chen</div>
+          </div>
+          <div class="flow-facility">
+            <div class="flow-facility-icon">⚗️</div>
+            <div class="flow-facility-name">MedTech Sterile Processing</div>
+            <div class="flow-facility-team">WFI · Sterile MFG · Team: Reyes</div>
+          </div>
+          <div class="flow-facility">
+            <div class="flow-facility-icon">🔬</div>
+            <div class="flow-facility-name">CellTech Bioreactors</div>
+            <div class="flow-facility-team">ISO 7 · WFI Issue · Team: Kim</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ CAPABILITIES ═══ -->
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="eyebrow">Platform Capabilities</div>
+    <h2>Capabilities purpose-built for pharmaceutical operations</h2>
+    <div class="caps-grid">
+      <div class="cap-card">
+        <div class="cap-icon">👁</div>
+        <div class="cap-name">PharmaWeldEye</div>
+        <p class="cap-desc">ASME BPE orbital weld inspection: enforces SF1/SF4/SF6 Ra surface finish limits per WFI, PW, and CIP service. Deviation opened automatically on rejection. Weld maps generated and stored for FDA audit trail.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">⚡</div>
+        <div class="cap-name">PharmaFaultLine</div>
+        <p class="cap-desc">Fault triage at $145/hr pharma labor rate, $2,000/hr cleanroom downtime. cGMP deviations opened on critical events. Always requires cGMP clearance on work orders — no work proceeds without it.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">👥</div>
+        <div class="cap-name">PharmaCrewMatch</div>
+        <p class="cap-desc">cGMP clearance is a hard gate — never stretched. BPE_QUAL required for WFI orbital work. Facility Manager notified on every dispatch. Credential gaps trigger contractor search automatically.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🔗</div>
+        <div class="cap-name">PharmaChainSight</div>
+        <p class="cap-desc">MTR verification against ASME BPE / ASTM chemical limits for 316L. Lot genealogy traces a bad heat number to every weld it touched across all facilities. Supplier risk flagged before parts ship.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🎓</div>
+        <div class="cap-name">PharmaSkillForge</div>
+        <p class="cap-desc">6-month BPE requalification cycles. 2-coupon orbital weld qualification programs. 12-month cGMP annual training expiry — surfaced before crew dispatch, not discovered on-site during a 483.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🛡</div>
+        <div class="cap-name">PharmaPilotCheck</div>
+        <p class="cap-desc">IQ/OQ/PQ acceptance always requires QA Manager co-sign — regardless of AI competency. FDA documentation release requires VP Quality sign-off. Regulatory co-sign, not just a competency gate. Capital spend logged with approver ID and timestamp.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">📊</div>
+        <div class="cap-name">PharmaProjectPilot</div>
+        <p class="cap-desc">IQ → OQ → PQ phase tracking with FDA documentation package assembly. Three feasibility approaches evaluated against timeline, cost, FDA risk, and crew availability before work starts. Board-level capital gates enforced.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🏭</div>
+        <div class="cap-name">FabQueue</div>
+        <p class="cap-desc">NEW: HQ fabrication queue for weld spools, 3D-printed fittings, and CNC parts dispatched to facilities with MTR documentation. MTR hold enforced before shipping. Staged delivery schedules coordinated with facility timelines.</p>
+      </div>
+      <div class="cap-card spine-card">
+        <div class="cap-icon">🧠</div>
+        <div class="cap-name">PharmaSpine</div>
+        <p class="cap-desc">The integration backbone: Deviation, FabOrder, FacilityProfile, and MTRPackage entities. 11 pharma-specific event topics so a weld rejection cascades to crew, supply, training, and QA automatically — no manual handoffs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ COMPLIANCE ═══ -->
+<section class="section" id="compliance" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="eyebrow">Regulatory Framework</div>
+    <h2>Every regulatory requirement, built in</h2>
+    <p style="color:var(--dim);margin-top:0.75rem;max-width:600px;">Not bolted on after the fact. Each model is built with the regulatory requirement as a first-class constraint — not an afterthought.</p>
+    <div class="compliance-grid">
+      <div class="comp-card">
+        <div class="comp-badge">✓ ASME BPE 2022</div>
+        <div class="comp-title">Orbital Weld Qualification</div>
+        <p class="comp-text">Orbital weld acceptance criteria enforced by PharmaWeldEye. Ra limits per SF category (SF1: 0.38 µm, SF4: 0.51 µm, SF6: 0.76 µm). ID surface finish measured and recorded. Weld maps generated automatically and stored with lot and coupon traceability.</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-badge">✓ FDA 21 CFR 211 / Part 11</div>
+        <div class="comp-title">Electronic Records &amp; Audit Trail</div>
+        <p class="comp-text">Electronic records with complete audit trail for every AI recommendation — logged with worker competency level, model version, and timestamp. Capital approvals logged with approver ID and timestamp. Part 11-compliant e-signature flow for QA and VP Quality authorization.</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-badge">✓ cGMP / ICH Q10</div>
+        <div class="comp-title">Deviation &amp; CAPA Management</div>
+        <p class="comp-text">Deviation management from detection to CAPA to closure — tracked in PharmaSpine with full event history. No work is performed without cGMP clearance verified at dispatch. Annual training expiry surfaced before crew deployment, not during an inspection.</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-badge">✓ IQ/OQ/PQ · ISPE / GAMP 5</div>
+        <div class="comp-title">Qualification Phase Tracking</div>
+        <p class="comp-text">Phase tracking with gate events. QA Manager co-sign required at each IQ, OQ, and PQ phase. FDA documentation package assembled from weld maps, MTR index, and qualification protocols — ready for submission without manual assembly by QA staff.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ DEMO ═══════ -->
+<section class="section" id="demo">
+  <div class="container">
+    <div class="demo-header">
+      <div class="eyebrow">Interactive Platform Demo</div>
+      <h2>See Pharma Facilities OS running — live</h2>
+      <p class="demo-subtext">Six client facilities. Nine AI models. All reacting in real time to pharmaceutical manufacturing events.</p>
+    </div>
+
+    <!-- Scenario tabs -->
+    <div class="scenario-tabs">
+      <button class="tab-btn active" onclick="selectScenario('A')">Scenario A — WFI Orbital Weld Rejection</button>
+      <button class="tab-btn" onclick="selectScenario('B')">Scenario B — FDA 483 Audit Response</button>
+      <button class="tab-btn" onclick="selectScenario('C')">Scenario C — New Sterile Fill Line</button>
+    </div>
+
+    <!-- Controls -->
+    <div class="demo-controls">
+      <button class="btn btn-primary" id="runBtn" onclick="runScenario()">▶ Run Scenario</button>
+      <button class="btn btn-outline" onclick="resetDemo()">↺ Reset</button>
+      <div class="speed-control">
+        <span>Speed:</span>
+        <input type="range" id="speedSlider" min="1" max="5" value="3">
+        <span id="speedLabel">Medium</span>
+      </div>
+    </div>
+
+    <!-- Split view -->
+    <div class="demo-split">
+      <!-- LEFT: facility grid -->
+      <div>
+        <div class="section-label" style="margin-bottom:0.75rem;">Facility Status</div>
+        <div class="facility-grid" id="facilityGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- RIGHT: activity feed -->
+      <div class="activity-panel">
+        <div class="activity-header">
+          <span class="activity-title">Event Stream</span>
+          <span id="eventCount" style="font-size:0.7rem;color:var(--muted);">0 events</span>
+        </div>
+        <div class="activity-feed" id="activityFeed">
+          <div class="empty-state">Select a scenario and click <strong>Run Scenario</strong> to begin.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI strip -->
+    <div class="kpi-strip">
+      <div class="kpi-cell">
+        <div class="kpi-val" id="kpi-ontarget" style="color:var(--ok)">4</div>
+        <div class="kpi-lbl">Facilities On Track</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-val" id="kpi-devs" style="color:var(--warn)">0</div>
+        <div class="kpi-lbl">Open Deviations</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-val" id="kpi-teams" style="color:var(--accent)">0</div>
+        <div class="kpi-lbl">Field Teams Deployed</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-val" id="kpi-fab" style="color:var(--pipe)">0</div>
+        <div class="kpi-lbl">Parts in Fab</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-val" id="kpi-cost" style="color:var(--crit)">$0</div>
+        <div class="kpi-lbl">Cost Exposure</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ TESTIMONIALS ═══════ -->
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="eyebrow">What Customers Say</div>
+    <h2>Trusted by pharmaceutical manufacturing leaders</h2>
+    <p style="color:var(--dim);margin-top:0.5rem;font-size:0.8rem;font-style:italic;">Illustrative quotes reflecting real platform outcomes.</p>
+    <div class="testimonial-grid">
+      <div class="quote-card">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">We reduced time-from-deviation-to-CAPA-initiation from 4 days to under 4 hours. The automatic deviation opening and crew dispatch changed our entire response posture.</p>
+        <div class="quote-attribution">
+          <div class="quote-name">Head of Quality</div>
+          <div class="quote-role">Sterile Fill-Finish Facility</div>
+        </div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">The MTR verification alone saved us two FDA observations. Knowing that every heat number is traced before parts ship — that's peace of mind we didn't have before.</p>
+        <div class="quote-attribution">
+          <div class="quote-name">VP Operations</div>
+          <div class="quote-role">Pharmaceutical Manufacturing</div>
+        </div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">For the first time, HQ can see all six sites in one view without waiting for the weekly report. We caught a WFI loop issue at 11pm that would have been a production hold by morning.</p>
+        <div class="quote-attribution">
+          <div class="quote-name">Facility Director</div>
+          <div class="quote-role">Multi-Site Operations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ CTA ════════ -->
+<section class="cta-section" id="pricing">
+  <div class="container">
+    <div class="eyebrow" style="color:var(--clean);">Ready to Get Started</div>
+    <h2 class="cta-title">Ready to bring your facility network under one command center?</h2>
+    <p class="cta-sub">Purpose-built for pharmaceutical manufacturing HQ operations. No infrastructure dependencies.</p>
+    <div class="cta-btns">
+      <a href="#demo" class="btn btn-primary btn-lg">Schedule a Demo</a>
+      <a href="#compliance" class="btn btn-outline btn-lg">Download Compliance Brief</a>
+    </div>
+    <div class="cta-stack">ASME BPE &nbsp;·&nbsp; FDA 21 CFR &nbsp;·&nbsp; cGMP &nbsp;·&nbsp; IQ/OQ/PQ &nbsp;·&nbsp; Built on Claude &nbsp;·&nbsp; Python &nbsp;·&nbsp; Zero infrastructure dependencies</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ FOOTER ═══════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-logo-col">
+        <a class="nav-logo" href="#" style="text-decoration:none;display:inline-flex;">
+          <div class="logo-mark">R<sub style="font-size:0.6em">x</sub></div>
+          <div class="nav-wordmark">
+            <span class="nav-name">Pharma Facilities OS</span>
+            <span class="nav-sub">by TradesOS</span>
+          </div>
+        </a>
+        <p class="footer-tagline" style="margin-top:0.75rem;">HQ command center for multi-site pharmaceutical manufacturing. cGMP-native, FDA-ready, field-team-first.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#platform">How It Works</a></li>
+          <li><a href="#platform">AI Model Layer</a></li>
+          <li><a href="#platform">FabQueue</a></li>
+          <li><a href="#demo">Live Demo</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Compliance</div>
+        <ul class="footer-links">
+          <li><a href="#compliance">ASME BPE 2022</a></li>
+          <li><a href="#compliance">FDA 21 CFR Part 11</a></li>
+          <li><a href="#compliance">cGMP / ICH Q10</a></li>
+          <li><a href="#compliance">IQ/OQ/PQ Framework</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About TradesOS</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TradesOS. All rights reserved. Pharma Facilities OS is a product of TradesOS.</span>
+      <span style="color:var(--border);">Built on Claude · ASME BPE · FDA 21 CFR</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// DEMO ENGINE
+// ═══════════════════════════════════════════════════════════════════
+
+let currentScenario = 'A';
+let isRunning = false;
+let timeouts = [];
+let eventCount = 0;
+
+// Speed mapping: slider 1-5 → ms delay between steps
+const speedMap = { 1: 3000, 2: 2000, 3: 1200, 4: 700, 5: 350 };
+const speedLabels = { 1: 'Slow', 2: 'Moderate', 3: 'Medium', 4: 'Fast', 5: 'Rapid' };
+
+document.getElementById('speedSlider').addEventListener('input', function() {
+  document.getElementById('speedLabel').textContent = speedLabels[this.value];
+});
+
+// ── Facility initial state ──────────────────────────────────────────
+const facilities = {
+  biogen: { name: 'BioGen Therapeutics', sub: 'Cleanroom Suite 2 · ISO 5 · WFI Loop', status: 'ok', statusLabel: 'ON TRACK', devs: 0, team: 'No team deployed' },
+  novavax: { name: 'Novavax Fill-Finish', sub: 'Line 3 · ISO 6 · Sterile Drug Product', status: 'warn', statusLabel: 'MONITOR', devs: 2, team: 'Chen team on-site' },
+  medtech: { name: 'MedTech Sterile Processing', sub: 'WFI Loop · Sterile MFG', status: 'ok', statusLabel: 'ON TRACK', devs: 1, team: 'Reyes team scheduled' },
+  celltech: { name: 'CellTech Bioreactors', sub: 'ISO 7 · WFI Loop', status: 'ok', statusLabel: 'ON TRACK', devs: 0, team: 'No team deployed' }
+};
+
+// KPI state
+const kpis = { ontarget: 4, devs: 0, teams: 0, fab: 0, cost: 0 };
+
+function renderFacilityGrid() {
+  const grid = document.getElementById('facilityGrid');
+  grid.innerHTML = '';
+  Object.entries(facilities).forEach(([key, f]) => {
+    const pill = `pill-${f.status}`;
+    grid.innerHTML += `
+      <div class="fac-card status-${f.status}" id="fac-${key}">
+        <div class="fac-name">${f.name}</div>
+        <div class="fac-type">${f.sub}</div>
+        <div class="fac-status-row">
+          <span class="status-pill ${pill}">${f.statusLabel}</span>
+        </div>
+        <div class="fac-devs">${f.devs} open deviation${f.devs !== 1 ? 's' : ''}</div>
+        <div class="fac-team">${f.team}</div>
+      </div>`;
+  });
+}
+
+function updateKPIs() {
+  const costStr = kpis.cost >= 1000 ? `$${(kpis.cost/1000).toFixed(0)}k` : `$${kpis.cost}`;
+  document.getElementById('kpi-ontarget').textContent = kpis.ontarget;
+  document.getElementById('kpi-devs').textContent = kpis.devs;
+  document.getElementById('kpi-teams').textContent = kpis.teams;
+  document.getElementById('kpi-fab').textContent = kpis.fab;
+  document.getElementById('kpi-cost').textContent = costStr;
+}
+
+function updateFacility(key, patch) {
+  Object.assign(facilities[key], patch);
+  renderFacilityGrid();
+}
+
+// ── Scenario data ──────────────────────────────────────────────────
+const scenarios = {
+  A: {
+    label: 'WFI Orbital Weld Rejection',
+    steps: [
+      {
+        model: 'PharmaWeldEye', modelClass: 'event-model-weldeye',
+        desc: 'Orbital Weld <strong>WFI-ID-04-B REJECTED</strong> — Ra 0.71 µm exceeds 0.51 µm SF4 limit',
+        detail: 'CellTech Bioreactors · WFI Loop · ASME BPE violation confirmed',
+        badges: [{ text: 'CRITICAL', cls: 'badge-crit' }, { text: 'ASME BPE', cls: 'badge-reg' }],
+        fac: 'celltech', facPatch: { status: 'crit', statusLabel: 'ACTION REQ', devs: 1 },
+        kpi: { devs: 1, ontarget: 3, cost: 6180 }
+      },
+      {
+        model: 'PharmaWeldEye', modelClass: 'event-model-weldeye',
+        desc: 'Deviation <strong>DEV-2251 Opened (Critical)</strong> — 21 CFR 211 mandatory deviation',
+        detail: 'WFI loop isolated at CellTech · Weld map updated · QA notified',
+        badges: [{ text: 'DEV-2251', cls: 'badge-crit' }, { text: '21 CFR 211', cls: 'badge-reg' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaFaultLine', modelClass: 'event-model-fault',
+        desc: 'Work Order <strong>WO-4412</strong> — BPE weld rework + re-qualification',
+        detail: '18 labor hrs · $6,180 total · ELEVATED priority · Site manager sign-off required',
+        badges: [{ text: 'ELEVATED', cls: 'badge-warn' }, { text: '$6,180', cls: 'badge-info' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaPilotCheck', modelClass: 'event-model-pilot',
+        desc: 'Regulatory Gate — <strong>IQ phase weld acceptance requires QA Manager co-sign</strong>',
+        detail: 'This is a regulatory requirement, not a competency gate · Awaiting QA Manager authorization',
+        badges: [{ text: 'REG GATE', cls: 'badge-reg' }, { text: 'QA CO-SIGN', cls: 'badge-reg' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaCrewMatch', modelClass: 'event-model-crew',
+        desc: 'Crew Match — <strong>ORBITL_WELD_BPE_316L + cGMP + BPE_QUAL required</strong>',
+        detail: 'Alex Rivera: EXACT MATCH · cGMP clearance verified · BPE_QUAL active · Dispatched to CellTech',
+        badges: [{ text: 'DISPATCHED', cls: 'badge-ok' }, { text: 'cGMP ✓', cls: 'badge-ok' }],
+        fac: 'celltech', facPatch: { team: 'Rivera — dispatched (ETA 2hr)' },
+        kpi: { teams: 1 }
+      },
+      {
+        model: 'FabQueue', modelClass: 'event-model-fab',
+        desc: 'HQ Fab Order <strong>FAB-0882</strong> — 316L BPE spool, SF4 rated, 2-day lead',
+        detail: 'MTR required before shipping · Lot verification pending · PharmaChainSight triggered',
+        badges: [{ text: 'MTR HOLD', cls: 'badge-warn' }, { text: 'FAB-0882', cls: 'badge-pipe' }],
+        fac: null, kpi: { fab: 1 }
+      },
+      {
+        model: 'PharmaChainSight', modelClass: 'event-model-chain',
+        desc: 'MTR Verification — Weld wire lot <strong>ER316L_B07</strong> checked against ASME BPE limits',
+        detail: '316L heat number traced · Chemical limits: Mo 2.12% ✓ · Cr 16.8% ✓ · 2 welds implicated',
+        badges: [{ text: 'MTR ✓', cls: 'badge-ok' }, { text: '2 WELDS', cls: 'badge-warn' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaChainSight', modelClass: 'event-model-chain',
+        desc: 'GENEALOGY — Lot ER316L_B07 touches <strong>2 WFI welds at CellTech</strong>',
+        detail: '$11,200 re-inspection exposure · WFI-ID-04-A and WFI-ID-04-B flagged for re-inspection',
+        badges: [{ text: 'ELEVATED', cls: 'badge-warn' }, { text: '$11,200', cls: 'badge-crit' }],
+        fac: null, kpi: { cost: 11200 }
+      },
+      {
+        model: 'PharmaSkillForge', modelClass: 'event-model-skill',
+        desc: 'Rivera BPE Re-Qualification Triggered — <strong>qualification expired 60 days ago</strong>',
+        detail: '2 coupons required before next WFI orbital assignment · Pre-mobilization window: 2 weeks',
+        badges: [{ text: 'REQUALIFY', cls: 'badge-warn' }, { text: '2 COUPONS', cls: 'badge-info' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaProjectPilot', modelClass: 'event-model-project',
+        desc: 'WFI Commissioning Timeline Pushed — <strong>6 business days</strong>',
+        detail: 'CellTech Q1 schedule updated · Facility Manager notified · FDA documentation package queued',
+        badges: [{ text: '+6 DAYS', cls: 'badge-crit' }, { text: 'FM NOTIFIED', cls: 'badge-info' }],
+        fac: 'celltech', facPatch: { sub: 'ISO 7 · WFI Loop · Timeline +6d' },
+        kpi: {}
+      }
+    ]
+  },
+  B: {
+    label: 'FDA 483 Audit Response',
+    steps: [
+      {
+        model: 'FDA', modelClass: 'event-model-hq',
+        desc: '<strong>FDA 483 Received — MedTech Sterile Processing</strong> — 3 Observations',
+        detail: 'Obs 1: Weld re-qualification overdue · Obs 2: Open CAPA #CR-0441 · Obs 3: Incomplete weld records',
+        badges: [{ text: 'FDA 483', cls: 'badge-crit' }, { text: '3 OBS', cls: 'badge-crit' }],
+        fac: 'medtech', facPatch: { status: 'crit', statusLabel: 'FDA 483', devs: 4 },
+        kpi: { devs: 4, ontarget: 3, cost: 54000 }
+      },
+      {
+        model: 'PharmaProjectPilot', modelClass: 'event-model-project',
+        desc: 'Pre-Assessment Initiated — <strong>3 Approach Options Being Evaluated</strong>',
+        detail: 'Feasibility study against timeline, cost, FDA risk, and crew availability',
+        badges: [{ text: 'FEASIBILITY', cls: 'badge-info' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaProjectPilot', modelClass: 'event-model-project',
+        desc: '★ Recommended — <strong>Parallel-track with HQ Pre-Fab: 3 weeks, $54,000</strong>',
+        detail: 'vs 6-week internal-only at $38k (FDA risk: HIGH) · vs 8-week with consultant at $67k',
+        badges: [{ text: 'RECOMMENDED', cls: 'badge-ok' }, { text: '$54,000', cls: 'badge-warn' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaPilotCheck', modelClass: 'event-model-pilot',
+        desc: 'Capital Gate — $54,000 → <strong>VP Quality + CFO Authorization Required</strong>',
+        detail: 'Capital tier threshold exceeded · Dual sign-off required · Authorization request sent',
+        badges: [{ text: 'CAPITAL GATE', cls: 'badge-reg' }, { text: 'DUAL SIGN-OFF', cls: 'badge-reg' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaCrewMatch', modelClass: 'event-model-crew',
+        desc: 'Surge Team — <strong>5 roles: 3 match internally, 2 gaps</strong> (QA Validator, Doc Lead)',
+        detail: 'QA Validator: no internal BPE_QUAL available · Doc Lead: cert lapsed · Contractor search triggered',
+        badges: [{ text: '2 GAPS', cls: 'badge-warn' }, { text: 'CONTRACTOR', cls: 'badge-info' }],
+        fac: 'medtech', facPatch: { team: 'Surge team assembling (3+2)' },
+        kpi: { teams: 1 }
+      },
+      {
+        model: 'PharmaSkillForge', modelClass: 'event-model-skill',
+        desc: 'Re-Qualification — <strong>Reyes cert lapsed, Kim written exam missing</strong>',
+        detail: 'Both require re-qualification before signing BPE records · 2-coupon programs scheduled',
+        badges: [{ text: 'REQUALIFY ×2', cls: 'badge-warn' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'FabQueue', modelClass: 'event-model-fab',
+        desc: 'HQ Fab — <strong>12 BPE test coupons for re-qualification program</strong>',
+        detail: 'Reyes + Kim re-qual · 316L BPE spec · MTR required · 3-day lead time',
+        badges: [{ text: '12 COUPONS', cls: 'badge-pipe' }, { text: 'MTR REQ', cls: 'badge-warn' }],
+        fac: null, kpi: { fab: 12 }
+      },
+      {
+        model: 'PharmaProjectPilot', modelClass: 'event-model-project',
+        desc: 'Response Package Ready — <strong>Authorization sent to VP Quality + CFO</strong>',
+        detail: 'Target: all 3 observations closed by 2026-06-01 · 3-week parallel track confirmed',
+        badges: [{ text: 'PKG READY', cls: 'badge-ok' }, { text: '2026-06-01', cls: 'badge-info' }],
+        fac: 'medtech', facPatch: { statusLabel: 'RESPONSE IN PROGRESS', status: 'warn', devs: 3 },
+        kpi: { ontarget: 3 }
+      }
+    ]
+  },
+  C: {
+    label: 'New Sterile Fill Line',
+    steps: [
+      {
+        model: 'HQ', modelClass: 'event-model-hq',
+        desc: 'New Project Request — <strong>Novavax Building 9 Sterile Fill Line</strong>',
+        detail: 'WFI loop · Clean steam · HVAC (ISO 6) · Purified Water · 14-week target',
+        badges: [{ text: 'NEW PROJECT', cls: 'badge-info' }, { text: '14 WEEKS', cls: 'badge-info' }],
+        fac: 'novavax', facPatch: { status: 'warn', statusLabel: 'PROJECT INIT', devs: 2 },
+        kpi: { cost: 534000, ontarget: 3 }
+      },
+      {
+        model: 'PharmaProjectPilot', modelClass: 'event-model-project',
+        desc: 'Feasibility Study — <strong>3 Approaches Evaluated</strong>',
+        detail: 'Assessed against timeline, cost, FDA risk, and crew availability for ISO 6 sterile fill',
+        badges: [{ text: 'FEASIBILITY', cls: 'badge-info' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaProjectPilot', modelClass: 'event-model-project',
+        desc: '★ Recommended — <strong>Parallel Track with HQ Pre-Fab: 12 weeks, $534,000</strong>',
+        detail: 'Board authorization required · vs 16-week internal at $420k · vs 20-week phased at $610k',
+        badges: [{ text: 'RECOMMENDED', cls: 'badge-ok' }, { text: '$534,000', cls: 'badge-crit' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaPilotCheck', modelClass: 'event-model-pilot',
+        desc: 'Capital Gate — $534,000 → <strong>Board Authorization Required</strong>',
+        detail: '35× capital threshold exceeded · Board resolution required before any spend · Authorization request queued',
+        badges: [{ text: 'BOARD GATE', cls: 'badge-reg' }, { text: '35× THRESHOLD', cls: 'badge-reg' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaCrewMatch', modelClass: 'event-model-crew',
+        desc: '8-Person Crew Plan — <strong>5 internal, 3 gaps</strong> (orbital welder, electrical, validation)',
+        detail: 'Internal matches: Rivera (orbital), Chen (PW), Kim (HVAC), Lee (clean steam), Park (IQ/OQ) · Contractor pipeline activated for 3 gaps',
+        badges: [{ text: '3 GAPS', cls: 'badge-warn' }, { text: 'CONTRACTOR', cls: 'badge-info' }],
+        fac: 'novavax', facPatch: { team: '8-person crew plan active' },
+        kpi: { teams: 1 }
+      },
+      {
+        model: 'FabQueue', modelClass: 'event-model-fab',
+        desc: 'HQ Pre-Fab Schedule — <strong>23 spools, 2 skid frames, 60 ports</strong>',
+        detail: '14-week staged delivery · MTR package required for each lot · Weeks 1-4: spools · Weeks 5-8: skids',
+        badges: [{ text: '23 SPOOLS', cls: 'badge-pipe' }, { text: 'STAGED', cls: 'badge-info' }],
+        fac: null, kpi: { fab: 23 }
+      },
+      {
+        model: 'PharmaChainSight', modelClass: 'event-model-chain',
+        desc: '316L BPE Tube Shortage Risk — <strong>6-week lead, need week 3</strong>',
+        detail: 'Expedite order triggered · Dual-source: AcroMet (primary) + Sandvik (secondary) · MTR pre-verified',
+        badges: [{ text: 'SUPPLY RISK', cls: 'badge-warn' }, { text: 'EXPEDITE', cls: 'badge-info' }],
+        fac: null, kpi: {}
+      },
+      {
+        model: 'PharmaSkillForge', modelClass: 'event-model-skill',
+        desc: 'Crew Ramp — <strong>3 workers need BPE qualification refreshers</strong> before mobilization',
+        detail: 'Rivera: coupon 2 of 2 pending · Chen: written exam · Park: 6-month BPE refresh · 2-week pre-mob window',
+        badges: [{ text: '3 REFRESH', cls: 'badge-warn' }, { text: '2-WEEK PRE-MOB', cls: 'badge-info' }],
+        fac: 'novavax', facPatch: { statusLabel: 'PRE-MOB' },
+        kpi: {}
+      }
+    ]
+  }
+};
+
+// ── State init ──────────────────────────────────────────────────────
+function resetFacilities() {
+  Object.assign(facilities, {
+    biogen: { name: 'BioGen Therapeutics', sub: 'Cleanroom Suite 2 · ISO 5 · WFI Loop', status: 'ok', statusLabel: 'ON TRACK', devs: 0, team: 'No team deployed' },
+    novavax: { name: 'Novavax Fill-Finish', sub: 'Line 3 · ISO 6 · Sterile Drug Product', status: 'warn', statusLabel: 'MONITOR', devs: 2, team: 'Chen team on-site' },
+    medtech: { name: 'MedTech Sterile Processing', sub: 'WFI Loop · Sterile MFG', status: 'ok', statusLabel: 'ON TRACK', devs: 1, team: 'Reyes team scheduled' },
+    celltech: { name: 'CellTech Bioreactors', sub: 'ISO 7 · WFI Loop', status: 'ok', statusLabel: 'ON TRACK', devs: 0, team: 'No team deployed' }
+  });
+}
+
+function resetKPIs() {
+  Object.assign(kpis, { ontarget: 4, devs: 0, teams: 0, fab: 0, cost: 0 });
+}
+
+function resetDemo() {
+  timeouts.forEach(t => clearTimeout(t));
+  timeouts = [];
+  isRunning = false;
+  eventCount = 0;
+  document.getElementById('runBtn').disabled = false;
+  document.getElementById('runBtn').textContent = '▶ Run Scenario';
+  document.getElementById('activityFeed').innerHTML = '<div class="empty-state">Select a scenario and click <strong>Run Scenario</strong> to begin.</div>';
+  document.getElementById('eventCount').textContent = '0 events';
+  resetFacilities();
+  resetKPIs();
+  renderFacilityGrid();
+  updateKPIs();
+}
+
+function selectScenario(id) {
+  currentScenario = id;
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', ['A','B','C'][i] === id);
+  });
+  resetDemo();
+}
+
+function runScenario() {
+  if (isRunning) return;
+  isRunning = true;
+  const runBtn = document.getElementById('runBtn');
+  runBtn.disabled = true;
+  runBtn.textContent = '⏳ Running…';
+
+  const feed = document.getElementById('activityFeed');
+  feed.innerHTML = '';
+
+  const scenario = scenarios[currentScenario];
+  const speed = parseInt(document.getElementById('speedSlider').value);
+  const delay = speedMap[speed];
+
+  let cumulativeKPI = { ontarget: 4, devs: 0, teams: 0, fab: 0, cost: 0 };
+
+  scenario.steps.forEach((step, i) => {
+    const t = setTimeout(() => {
+      eventCount++;
+      document.getElementById('eventCount').textContent = `${eventCount} event${eventCount !== 1 ? 's' : ''}`;
+
+      // Build badges HTML
+      const badgeHtml = step.badges.map(b => `<span class="event-badge ${b.cls}">${b.text}</span>`).join('');
+
+      // Render event row
+      const row = document.createElement('div');
+      row.className = 'event-row';
+      row.innerHTML = `
+        <div class="event-step">${i + 1}</div>
+        <div class="event-body">
+          <div class="event-model ${step.modelClass}">${step.model}${badgeHtml}</div>
+          <div class="event-desc">${step.desc}</div>
+          <div class="event-detail">${step.detail}</div>
+        </div>`;
+      feed.insertBefore(row, feed.firstChild);
+
+      // Update facility
+      if (step.fac && step.facPatch) {
+        updateFacility(step.fac, step.facPatch);
+      } else {
+        renderFacilityGrid();
+      }
+
+      // Update KPIs (accumulate)
+      if (step.kpi) {
+        Object.entries(step.kpi).forEach(([k, v]) => {
+          cumulativeKPI[k] = v;
+        });
+        Object.assign(kpis, cumulativeKPI);
+        updateKPIs();
+      }
+
+      // Last step
+      if (i === scenario.steps.length - 1) {
+        isRunning = false;
+        runBtn.disabled = false;
+        runBtn.textContent = '▶ Run Again';
+      }
+    }, i * delay);
+    timeouts.push(t);
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+resetFacilities();
+resetKPIs();
+renderFacilityGrid();
+updateKPIs();
+</script>
+</body>
+</html>
