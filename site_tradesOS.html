@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradesOS — AI-Powered Operations for the Skilled Trades</title>
+<style>
+  :root {
+    --bg: #0a0d12;
+    --surface: #12161e;
+    --card: #181d28;
+    --border: #1e2535;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --dim: #94a3b8;
+    --accent: #f97316;
+    --accent-d: #c2410c;
+    --blue: #3b82f6;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --crit: #ef4444;
+    --purple: #8b5cf6;
+    --cyan: #06b6d4;
+    --violet: #a855f7;
+    --gray: #9ca3af;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(18, 22, 30, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--dim);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--accent-d); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--dim); background: rgba(255,255,255,0.04); }
+
+  .btn-large {
+    padding: 0.8rem 1.75rem;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2.5rem; max-width: 1280px; margin: 0 auto; }
+  .section-full { max-width: none; }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  h2 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    padding: 6rem 2.5rem 5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(249,115,22,0.3);
+    background: rgba(249,115,22,0.08);
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-h1 {
+    font-size: clamp(2.4rem, 4vw, 3.4rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--dim);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 520px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .trust-strip {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .trust-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+  }
+
+  /* ── TERMINAL ── */
+  .terminal {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+  }
+
+  .term-titlebar {
+    background: #1c1c1e;
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid #2a2a2e;
+  }
+
+  .term-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .term-dot.red { background: #ff5f56; }
+  .term-dot.yellow { background: #ffbd2e; }
+  .term-dot.green { background: #27c93f; }
+  .term-title { color: #666; font-size: 0.72rem; margin-left: 0.5rem; font-family: system-ui; }
+
+  .term-body { padding: 1rem 1.25rem; }
+
+  .t-prompt { color: #4ade80; }
+  .t-cmd { color: #e2e8f0; }
+  .t-comment { color: #64748b; }
+  .t-orange { color: #f97316; }
+  .t-blue { color: #60a5fa; }
+  .t-green { color: #4ade80; }
+  .t-yellow { color: #fbbf24; }
+  .t-red { color: #f87171; }
+  .t-purple { color: #c084fc; }
+  .t-cyan { color: #22d3ee; }
+  .t-dim { color: #475569; }
+  .t-bold { font-weight: 700; }
+  .term-line { display: block; white-space: pre; }
+
+  /* ── METRICS ── */
+  #metrics {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    max-width: none;
+    padding: 3rem 2.5rem;
+  }
+
+  .metrics-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .metric {
+    text-align: center;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .metric-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .metric-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .metric-divider {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+
+  /* ── SPINE DIAGRAM ── */
+  #how-it-works {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    max-width: none;
+    padding: 5rem 2.5rem;
+  }
+
+  .how-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .spine-diagram {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin-top: 3.5rem;
+  }
+
+  .spine-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .spine-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    padding: 0 1.5rem;
+  }
+
+  .spine-badge {
+    background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(249,115,22,0.05));
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 40px rgba(249,115,22,0.2), 0 0 80px rgba(249,115,22,0.08);
+  }
+
+  .spine-badge-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+
+  .spine-badge-name {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .spine-badge-desc {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.4;
+    max-width: 160px;
+  }
+
+  .spine-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin: 0.5rem auto;
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .spine-line-left, .spine-line-right {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(249,115,22,0.4));
+    flex: 1;
+    animation: flow 3s linear infinite;
+  }
+  .spine-line-right {
+    background: linear-gradient(270deg, transparent, rgba(249,115,22,0.4));
+  }
+
+  @keyframes flow {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+  }
+
+  .model-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+  }
+
+  .model-card:hover {
+    transform: translateX(2px);
+    border-color: var(--muted);
+  }
+
+  .spine-col:last-child .model-card:hover { transform: translateX(-2px); }
+
+  .model-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .model-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .model-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* connector lines */
+  .spine-col:first-child .model-card::after {
+    content: '';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    width: 2rem;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(249,115,22,0.3), rgba(249,115,22,0.6));
+  }
+
+  .spine-col:last-child .model-card::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 50%;
+    width: 2rem;
+    height: 1px;
+    background: linear-gradient(270deg, rgba(249,115,22,0.3), rgba(249,115,22,0.6));
+  }
+
+  /* ── FEATURES ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(249,115,22,0.3);
+    transform: translateY(-2px);
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card p {
+    font-size: 0.875rem;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+
+  /* ── DEMO ── */
+  #demo-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    max-width: none;
+    padding: 5rem 2.5rem;
+  }
+
+  .demo-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .demo-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .demo-header p {
+    color: var(--dim);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 1rem auto 0;
+  }
+
+  .scenario-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 0.6rem 1.1rem;
+    border-radius: 6px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .tab-btn:hover { color: var(--text); border-color: var(--dim); }
+  .tab-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .demo-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .speed-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 120px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+  }
+
+  .kpi-value {
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .kpi-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .activity-feed {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    min-height: 460px;
+    overflow-y: auto;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.8rem;
+    padding: 1rem;
+    position: relative;
+  }
+
+  .feed-empty {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+    font-family: system-ui;
+  }
+
+  .feed-row {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0.45rem 0.5rem;
+    border-radius: 4px;
+    animation: fadeSlideIn 0.4s ease forwards;
+    opacity: 0;
+    border-bottom: 1px solid rgba(30,37,53,0.5);
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .feed-row:hover { background: rgba(255,255,255,0.02); }
+
+  .feed-time {
+    color: var(--muted);
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .model-badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  .feed-content {
+    color: var(--text);
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+
+  .feed-content .feed-detail {
+    color: var(--dim);
+    display: block;
+    font-size: 0.73rem;
+    margin-top: 0.15rem;
+    font-family: system-ui;
+  }
+
+  .feed-content .hl-orange { color: var(--accent); font-weight: 700; }
+  .feed-content .hl-red { color: var(--crit); font-weight: 700; }
+  .feed-content .hl-green { color: var(--green); font-weight: 700; }
+  .feed-content .hl-blue { color: var(--blue); font-weight: 700; }
+  .feed-content .hl-yellow { color: var(--amber); font-weight: 700; }
+  .feed-content .hl-purple { color: var(--purple); font-weight: 700; }
+  .feed-content .hl-cyan { color: var(--cyan); font-weight: 700; }
+
+  /* ── USE CASES ── */
+  .use-cases-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .use-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    transition: border-color 0.2s;
+  }
+
+  .use-card:hover { border-color: rgba(249,115,22,0.25); }
+
+  .use-card-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .use-card p {
+    font-size: 0.875rem;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+
+  /* ── TECHNOLOGY ── */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .tech-text p {
+    color: var(--dim);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .tech-text p:last-child { margin-bottom: 0; }
+
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.82rem;
+  }
+
+  .code-titlebar {
+    background: #1c1c1e;
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid #2a2a2e;
+  }
+
+  .code-lang {
+    margin-left: auto;
+    font-size: 0.68rem;
+    color: #555;
+    font-family: system-ui;
+  }
+
+  .code-body {
+    padding: 1.25rem 1.5rem;
+    line-height: 1.8;
+  }
+
+  .c-kw { color: #c792ea; }
+  .c-fn { color: #82aaff; }
+  .c-str { color: #c3e88d; }
+  .c-cmt { color: #546e7a; font-style: italic; }
+  .c-cls { color: #ffcb6b; }
+  .c-num { color: #f78c6c; }
+  .c-op { color: #89ddff; }
+  .c-var { color: #eeffff; }
+
+  /* ── CTA ── */
+  #cta {
+    background: linear-gradient(135deg, rgba(249,115,22,0.12) 0%, rgba(194,65,12,0.08) 100%);
+    border-top: 1px solid rgba(249,115,22,0.2);
+    border-bottom: 1px solid rgba(249,115,22,0.2);
+    max-width: none;
+    text-align: center;
+    padding: 6rem 2.5rem;
+  }
+
+  .cta-inner { max-width: 700px; margin: 0 auto; }
+
+  .cta-inner h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .cta-inner p {
+    color: var(--dim);
+    font-size: 1.05rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+
+  .cta-footnote {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 4rem 2.5rem 2.5rem;
+  }
+
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footer-brand-tagline {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.75rem;
+    line-height: 1.6;
+    max-width: 260px;
+  }
+
+  .footer-col-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 1rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .footer-links a {
+    font-size: 0.875rem;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-legal a {
+    font-size: 0.8rem;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .footer-legal a:hover { color: var(--dim); }
+
+  /* section text helpers */
+  .section-intro {
+    color: var(--dim);
+    font-size: 1rem;
+    max-width: 580px;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; gap: 3rem; }
+    .spine-diagram { grid-template-columns: 1fr; }
+    .spine-center { padding: 1.5rem 0; }
+    .spine-col:first-child .model-card::after,
+    .spine-col:last-child .model-card::before { display: none; }
+    .features-grid { grid-template-columns: 1fr; }
+    .kpi-strip { grid-template-columns: repeat(3, 1fr); }
+    .use-cases-grid { grid-template-columns: 1fr; }
+    .tech-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .metrics-inner { flex-direction: column; align-items: center; }
+    .metric-divider { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">⚡</div>
+    <span>TradesOS</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#demo-section">Live Demo</a></li>
+    <li><a href="#use-cases">Use Cases</a></li>
+  </ul>
+  <div class="nav-right">
+    <a class="btn btn-primary" href="#cta">Request Access</a>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<div id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">⚡ AI-Powered Trades Operations</div>
+    <h1 class="hero-h1">
+      Eight AI models.<br>
+      One shared spine.<br>
+      <span>Zero integration glue.</span>
+    </h1>
+    <p class="hero-sub">
+      TradesOS connects quality inspection, fault response, crew dispatch, supply chain, skills training, and project management through a single event bus — so a defect detected on the shop floor flows automatically to every system that needs to act.
+    </p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary btn-large" href="#demo-section">▶ See Live Demo</a>
+      <a class="btn btn-outline btn-large" href="#how-it-works">View Architecture</a>
+    </div>
+    <div class="trust-strip">
+      <div class="trust-item"><div class="trust-dot"></div> Offline-capable</div>
+      <div class="trust-item"><div class="trust-dot"></div> No vendor lock-in</div>
+      <div class="trust-item"><div class="trust-dot"></div> Runs on Claude</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="terminal">
+      <div class="term-titlebar">
+        <div class="term-dot red"></div>
+        <div class="term-dot yellow"></div>
+        <div class="term-dot green"></div>
+        <span class="term-title">integration_demo.py — TradesOS v0.9</span>
+      </div>
+      <div class="term-body">
+        <span class="term-line"><span class="t-prompt">$</span> <span class="t-cmd">python integration_demo.py</span></span>
+        <span class="term-line"><span class="t-dim">─── Scenario A: Weld Quality Loop ───────</span></span>
+        <span class="term-line"> </span>
+        <span class="term-line"><span class="t-orange t-bold">[WeldEye]</span>  <span class="t-green">defect.detected</span></span>
+        <span class="term-line">           <span class="t-dim">type=undercut  score=0.84  cause=OPERATOR</span></span>
+        <span class="term-line">           <span class="t-dim">job=job_2  skill=GMAW_AL_3G  worker=Alex Rivera</span></span>
+        <span class="term-line"><span class="t-purple t-bold">[FaultLine]</span> <span class="t-green">workorder.created</span> <span class="t-yellow">WO-2281</span></span>
+        <span class="term-line">           <span class="t-dim">action="Grind &amp; Re-weld"  SLA=8hr  est=$1,540</span></span>
+        <span class="term-line">           <span class="t-yellow">tier=ELEVATED → Site Manager approval</span></span>
+        <span class="term-line"><span class="t-green t-bold">[CrewMatch]</span> <span class="t-green">crew.dispatched</span></span>
+        <span class="term-line">           <span class="t-dim">worker=Sam Cruz  match=GMAW_AL_3G+cGMP  site=Plant 4</span></span>
+        <span class="term-line"><span class="t-blue t-bold">[SkillForge]</span><span class="t-green"> training.assigned</span></span>
+        <span class="term-line">           <span class="t-dim">module="Travel Speed Control GMAW_AL_3G"  hrs=3  VR-sim</span></span>
+        <span class="term-line"> </span>
+        <span class="term-line"><span class="t-dim">✓ Defect → Work Order → Crew → Training in &lt;2 min</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ METRICS ══════════════ -->
+<section id="metrics" class="section-full">
+  <div class="metrics-inner">
+    <div class="metric">
+      <span class="metric-number">$1.5T+</span>
+      <div class="metric-label">Skilled trades<br>maintenance market</div>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric">
+      <span class="metric-number">8</span>
+      <div class="metric-label">AI models,<br>one shared spine</div>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric">
+      <span class="metric-number">5</span>
+      <div class="metric-label">Trade verticals<br>supported</div>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric">
+      <span class="metric-number">&lt;2min</span>
+      <div class="metric-label">Defect detection to<br>work order + crew</div>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric">
+      <span class="metric-number">97%</span>
+      <div class="metric-label">Defect attribution<br>accuracy (weld)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ HOW IT WORKS ══════════════ -->
+<section id="how-it-works" class="section-full">
+  <div class="how-inner">
+    <div style="text-align:center; margin-bottom:0.5rem;">
+      <span class="section-label">Architecture</span>
+    </div>
+    <h2 style="text-align:center;">One event bus. Every model reacts.</h2>
+    <p style="text-align:center; color:var(--dim); max-width:580px; margin:0 auto; font-size:0.95rem;">
+      The DataSpine is a typed, pub/sub event bus. Models subscribe to topics and publish results — no direct model-to-model coupling, no integration work, no glue code.
+    </p>
+
+    <div class="spine-diagram">
+      <!-- LEFT COLUMN: 4 models -->
+      <div class="spine-col">
+        <div class="model-card">
+          <div class="model-dot" style="background:var(--accent);"></div>
+          <div>
+            <div class="model-name">WeldEye</div>
+            <div class="model-desc">In-process defect detection &amp; root-cause attribution</div>
+          </div>
+        </div>
+        <div class="model-card">
+          <div class="model-dot" style="background:var(--purple);"></div>
+          <div>
+            <div class="model-name">FaultLine</div>
+            <div class="model-desc">Fault triage, work order generation &amp; dispatch</div>
+          </div>
+        </div>
+        <div class="model-card">
+          <div class="model-dot" style="background:var(--green);"></div>
+          <div>
+            <div class="model-name">CrewMatch</div>
+            <div class="model-desc">Workforce matching &amp; skill-gap forecasting</div>
+          </div>
+        </div>
+        <div class="model-card">
+          <div class="model-dot" style="background:var(--violet);"></div>
+          <div>
+            <div class="model-name">ChainSight</div>
+            <div class="model-desc">Supply chain risk &amp; part genealogy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: DataSpine -->
+      <div class="spine-center">
+        <div class="spine-badge">
+          <div class="spine-badge-label">Core Integration Layer</div>
+          <div class="spine-badge-name">DataSpine</div>
+          <div class="spine-badge-desc">Typed pub/sub event bus · In-memory or graph DB · Zero infrastructure</div>
+          <div class="spine-pulse"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: 4 models -->
+      <div class="spine-col">
+        <div class="model-card">
+          <div class="model-dot" style="background:var(--blue);"></div>
+          <div>
+            <div class="model-name">SkillForge</div>
+            <div class="model-desc">Adaptive training driven by production data</div>
+          </div>
+        </div>
+        <div class="model-card">
+          <div class="model-dot" style="background:var(--gray);"></div>
+          <div>
+            <div class="model-name">PilotCheck</div>
+            <div class="model-desc">Human-in-the-loop AI governance &amp; cost gates</div>
+          </div>
+        </div>
+        <div class="model-card">
+          <div class="model-dot" style="background:var(--cyan);"></div>
+          <div>
+            <div class="model-name">ProjectPilot</div>
+            <div class="model-desc">Project scheduling &amp; pre-project feasibility</div>
+          </div>
+        </div>
+        <div class="model-card">
+          <div class="model-dot" style="background:var(--amber);"></div>
+          <div>
+            <div class="model-name">CutPlan</div>
+            <div class="model-desc">CNC nesting &amp; cut-plan optimization</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FEATURES ══════════════ -->
+<section id="features">
+  <span class="section-label">Capabilities</span>
+  <h2>Built for the shop floor</h2>
+  <p class="section-intro">Every feature addresses a real operational gap — not a dashboard metric.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(249,115,22,0.12);">🔍</div>
+      <h3>Root-Cause in Real Time</h3>
+      <p>WeldEye doesn't just flag a defect. It classifies operator vs. process vs. material in the same call, so the right fix goes to the right person — not just the nearest supervisor.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(139,92,246,0.12);">🔄</div>
+      <h3>Feedback Loops That Close</h3>
+      <p>A defect traced to bad material automatically flags the supplier lot, checks genealogy across all jobs, and routes an estimated cost exposure for approval — without a human relay.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(34,197,94,0.12);">👷</div>
+      <h3>Crew Dispatch Without the Spreadsheet</h3>
+      <p>CrewMatch matches required skill codes, certifications, and clearances (cGMP, DoD, cleanroom) against your live workforce — and explains every tradeoff in plain language.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(59,130,246,0.12);">🎓</div>
+      <h3>Training Driven by Production Data</h3>
+      <p>SkillForge assigns micro-modules and hands-on remediations based on actual defect events, not static curriculum cycles — so training is always calibrated to what's actually going wrong.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(245,158,11,0.12);">💰</div>
+      <h3>Cost Gates Before You Commit</h3>
+      <p>Every work order gets a cost estimate and an approval tier (routine / elevated / capital) before a tech touches the floor. PilotCheck enforces who can sign what, with a full audit trail.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(6,182,212,0.12);">📋</div>
+      <h3>Pre-Project Feasibility, Not Gut Feel</h3>
+      <p>ProjectPilot evaluates 3 approach options — timeline, cost, risk, sign-off level — before work commences, replacing the gut-check with a reasoned, AI-assisted recommendation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ LIVE DEMO ══════════════ -->
+<section id="demo-section" class="section-full">
+  <div class="demo-inner">
+    <div class="demo-header">
+      <span class="section-label">Live Demo</span>
+      <h2>See it running — in your browser</h2>
+      <p>All eight models reacting to real events. No server. No API key required — this runs the same offline fallback path the actual models use.</p>
+    </div>
+
+    <!-- Scenario Tabs -->
+    <div class="scenario-tabs">
+      <button class="tab-btn active" onclick="selectScenario(1, this)">Scenario 1 — Weld Quality Loop</button>
+      <button class="tab-btn" onclick="selectScenario(2, this)">Scenario 2 — Material Recall</button>
+      <button class="tab-btn" onclick="selectScenario(3, this)">Scenario 3 — Pre-Project Feasibility</button>
+    </div>
+
+    <!-- Controls -->
+    <div class="demo-controls">
+      <button class="btn btn-primary" id="run-btn" onclick="runScenario()">▶ Run Scenario</button>
+      <button class="btn btn-outline" onclick="resetDemo()">↺ Reset</button>
+      <span class="speed-label">Speed:</span>
+      <input type="range" id="speed-slider" min="1" max="5" value="3" title="Playback speed">
+      <span class="speed-label" id="speed-display">Normal</span>
+    </div>
+
+    <!-- KPI Strip -->
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <span class="kpi-value" id="kpi-defects">0</span>
+        <div class="kpi-label">Defects<br>Triaged</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-value" id="kpi-wo">0</span>
+        <div class="kpi-label">Work<br>Orders</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-value" id="kpi-crew">0</span>
+        <div class="kpi-label">Crew<br>Dispatched</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-value" id="kpi-loops">0</span>
+        <div class="kpi-label">AI Feedback<br>Loops</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-value" id="kpi-cost">$0</span>
+        <div class="kpi-label">Cost<br>Exposure</div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="activity-feed" id="activity-feed">
+      <div class="feed-empty" id="feed-empty">
+        Select a scenario and click <strong>Run Scenario</strong> to see TradesOS in action.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ USE CASES ══════════════ -->
+<section id="use-cases">
+  <span class="section-label">Industries</span>
+  <h2>Where TradesOS operates</h2>
+  <p class="section-intro">High-consequence environments where the cost of a wrong call is measured in shutdowns, audits, or lives.</p>
+
+  <div class="use-cases-grid">
+    <div class="use-card">
+      <span class="use-card-icon">🏭</span>
+      <h3>Advanced Manufacturing</h3>
+      <p>Automotive stamping, aerospace fabrication, defense contract work. Multi-trade, multi-site, high defect cost. TradesOS closes the loop between quality inspection, fault response, and workforce deployment in a single event stream.</p>
+    </div>
+    <div class="use-card">
+      <span class="use-card-icon">⚗️</span>
+      <h3>Pharmaceutical Clean Utilities</h3>
+      <p>WFI loop welding, cleanroom HVAC, ASME BPE orbital weld qualification. TradesOS is the backbone of Pharma Facilities OS — managing clearance-gated crew dispatch, cGMP documentation, and pre-project feasibility for capital projects.</p>
+    </div>
+    <div class="use-card">
+      <span class="use-card-icon">⚡</span>
+      <h3>Energy &amp; Chemical Plants</h3>
+      <p>Pressure vessel maintenance, ASME B31.3 piping, turnaround planning. FaultLine's cost gates prevent unauthorized capital spend. ChainSight tracks part genealogy across long-duration maintenance windows with multiple contractors.</p>
+    </div>
+    <div class="use-card">
+      <span class="use-card-icon">🛡️</span>
+      <h3>Government / Defense</h3>
+      <p>Facility maintenance with clearance requirements. CrewMatch enforces DoD clearances at dispatch time — no workaround. PilotCheck provides immutable audit trails for every AI-assisted decision, satisfying oversight requirements.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TECHNOLOGY ══════════════ -->
+<section id="technology">
+  <span class="section-label">Technology</span>
+  <h2>Built on Claude. Built for the floor.</h2>
+
+  <div class="tech-grid">
+    <div class="tech-text">
+      <p>
+        TradesOS uses <strong style="color:var(--text);">Claude Sonnet</strong> for high-volume, latency-sensitive triage — WeldEye classifies defects, FaultLine generates work orders, CrewMatch resolves skill matches, and ChainSight traces genealogy, all in parallel event streams.
+      </p>
+      <p>
+        <strong style="color:var(--text);">Claude Opus</strong> handles the higher-stakes reasoning: SkillForge designs remediation paths, PilotCheck evaluates AI-assisted decisions against governance rules, and ProjectPilot compares approach tradeoffs for capital projects.
+      </p>
+      <p>
+        Every model has an <strong style="color:var(--text);">offline fallback</strong> — deterministic rule-based logic that produces the same output format as the live path. No API key required for development, testing, or air-gapped deployments. The event bus runs in-process with zero infrastructure dependencies.
+      </p>
+      <p>
+        The pub/sub topology means any model can be swapped, versioned, or replaced without touching the others. The spine is the only contract.
+      </p>
+    </div>
+    <div>
+      <div class="code-block">
+        <div class="code-titlebar">
+          <div class="term-dot red"></div>
+          <div class="term-dot yellow"></div>
+          <div class="term-dot green"></div>
+          <span class="code-lang">data_spine.py</span>
+        </div>
+        <div class="code-body">
+          <span style="display:block"><span class="c-cmt"># DataSpine — pub/sub event bus</span></span>
+          <span style="display:block"><span class="c-kw">class </span><span class="c-cls">DataSpine</span><span class="c-op">:</span></span>
+          <span style="display:block">    <span class="c-kw">def </span><span class="c-fn">subscribe</span><span class="c-op">(</span><span class="c-var">self</span><span class="c-op">, </span><span class="c-var">topic</span><span class="c-op">: </span><span class="c-cls">str</span><span class="c-op">,</span></span>
+          <span style="display:block">                    <span class="c-var">handler</span><span class="c-op">: </span><span class="c-cls">Callable</span><span class="c-op">) -> </span><span class="c-cls">None</span><span class="c-op">:</span></span>
+          <span style="display:block">        <span class="c-var">self</span><span class="c-op">.</span><span class="c-fn">_subs</span><span class="c-op">[</span><span class="c-var">topic</span><span class="c-op">].</span><span class="c-fn">append</span><span class="c-op">(</span><span class="c-var">handler</span><span class="c-op">)</span></span>
+          <span style="display:block">&nbsp;</span>
+          <span style="display:block">    <span class="c-kw">def </span><span class="c-fn">publish</span><span class="c-op">(</span><span class="c-var">self</span><span class="c-op">, </span><span class="c-var">topic</span><span class="c-op">: </span><span class="c-cls">str</span><span class="c-op">,</span></span>
+          <span style="display:block">                  <span class="c-var">payload</span><span class="c-op">: </span><span class="c-cls">dict</span><span class="c-op">) -> </span><span class="c-cls">None</span><span class="c-op">:</span></span>
+          <span style="display:block">        <span class="c-var">self</span><span class="c-op">.</span><span class="c-var">_events</span><span class="c-op">.</span><span class="c-fn">append</span><span class="c-op">({</span></span>
+          <span style="display:block">            <span class="c-str">"topic"</span><span class="c-op">: </span><span class="c-var">topic</span><span class="c-op">,</span></span>
+          <span style="display:block">            <span class="c-str">"payload"</span><span class="c-op">: </span><span class="c-var">payload</span><span class="c-op">,</span></span>
+          <span style="display:block">            <span class="c-str">"ts"</span><span class="c-op">: </span><span class="c-fn">_now</span><span class="c-op">()</span></span>
+          <span style="display:block">        <span class="c-op">})</span></span>
+          <span style="display:block">        <span class="c-kw">for </span><span class="c-var">h</span> <span class="c-kw">in </span><span class="c-var">self</span><span class="c-op">.</span><span class="c-var">_subs</span><span class="c-op">[</span><span class="c-var">topic</span><span class="c-op">]:</span></span>
+          <span style="display:block">            <span class="c-fn">h</span><span class="c-op">(</span><span class="c-var">payload</span><span class="c-op">)</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<section id="cta" class="section-full">
+  <div class="cta-inner">
+    <span class="section-label">Get Started</span>
+    <h2>Ready to see TradesOS in your operation?</h2>
+    <p>We work directly with operations leads, facility managers, and technology partners. Schedule a walkthrough or read the architecture brief.</p>
+    <div class="cta-btns">
+      <a class="btn btn-primary btn-large" href="#cta">Schedule a Demo</a>
+      <a class="btn btn-outline btn-large" href="#how-it-works">Read the Architecture Brief</a>
+    </div>
+    <div class="cta-footnote">Built on the Anthropic API &nbsp;·&nbsp; Python &nbsp;·&nbsp; Zero infrastructure dependencies</div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="nav-logo" style="margin-bottom:0.75rem;">
+          <div class="logo-mark">⚡</div>
+          <span>TradesOS</span>
+        </div>
+        <p class="footer-brand-tagline">AI-powered operations for the skilled trades — welding, sheet metal, plumbing, electrical, and HVAC.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#demo-section">Demo</a></li>
+          <li><a href="#how-it-works">Architecture</a></li>
+          <li><a href="#cta">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 TradesOS. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ JAVASCRIPT ══════════════ -->
+<script>
+// ── Scenario data ──────────────────────────────────────────────────────────
+
+const MODEL_COLORS = {
+  WeldEye:     { bg: 'rgba(249,115,22,0.2)',   text: '#f97316' },
+  FaultLine:   { bg: 'rgba(139,92,246,0.2)',   text: '#8b5cf6' },
+  CrewMatch:   { bg: 'rgba(34,197,94,0.2)',    text: '#22c55e' },
+  ChainSight:  { bg: 'rgba(168,85,247,0.2)',   text: '#a855f7' },
+  SkillForge:  { bg: 'rgba(59,130,246,0.2)',   text: '#3b82f6' },
+  PilotCheck:  { bg: 'rgba(156,163,175,0.2)',  text: '#9ca3af' },
+  ProjectPilot:{ bg: 'rgba(6,182,212,0.2)',    text: '#06b6d4' },
+  CutPlan:     { bg: 'rgba(245,158,11,0.2)',   text: '#f59e0b' },
+};
+
+// h() — lightweight HTML tag helper
+function h(tag, cls, html) {
+  return `<${tag} class="${cls}">${html}</${tag}>`;
+}
+
+// Build a feed row HTML string
+function makeRow(model, title, detail, time) {
+  const mc = MODEL_COLORS[model] || { bg:'rgba(100,116,139,0.2)', text:'#94a3b8' };
+  const badge = `<span class="model-badge" style="background:${mc.bg};color:${mc.text};">${model}</span>`;
+  const ts = `<span class="feed-time">${time}</span>`;
+  const content = `<span class="feed-content">${title}${detail ? `<span class="feed-detail">${detail}</span>` : ''}</span>`;
+  return `<div class="feed-row">${ts}${badge}${content}</div>`;
+}
+
+// KPI accumulators
+let kpiState = { defects:0, wo:0, crew:0, loops:0, cost:0 };
+function updateKPIs(delta) {
+  Object.keys(delta).forEach(k => kpiState[k] = (kpiState[k]||0) + delta[k]);
+  document.getElementById('kpi-defects').textContent = kpiState.defects;
+  document.getElementById('kpi-wo').textContent = kpiState.wo;
+  document.getElementById('kpi-crew').textContent = kpiState.crew;
+  document.getElementById('kpi-loops').textContent = kpiState.loops;
+  const cost = kpiState.cost;
+  document.getElementById('kpi-cost').textContent = cost >= 1000
+    ? '$' + (cost/1000).toFixed(0) + 'k'
+    : '$' + cost;
+}
+
+// ── Scenarios ─────────────────────────────────────────────────────────────
+
+const SCENARIOS = {
+  1: {
+    label: 'Weld Quality Loop',
+    kpiFinal: { defects:1, wo:1, crew:1, loops:3, cost:1540 },
+    steps: [
+      {
+        model: 'WeldEye',
+        title: `Defect Detected — <span class="hl-orange">Undercut, AWS D1.1 Visual Reject</span>`,
+        detail: `porosity_score=0.84 · type=undercut · job_2 · GMAW_AL_3G · worker=Alex Rivera`,
+        kpi: { defects:1 },
+        t: '00:00'
+      },
+      {
+        model: 'WeldEye',
+        title: `Root Cause: <span class="hl-red">OPERATOR</span> — Travel speed 15% over nominal`,
+        detail: `Classification confidence 0.91 · routing to SkillForge for remediation`,
+        kpi: { loops:1 },
+        t: '00:03'
+      },
+      {
+        model: 'FaultLine',
+        title: `Work Order <span class="hl-orange">WO-2281</span> Created — Grind &amp; Re-weld Undercut`,
+        detail: `SLA=8hr · priority=URGENT · estimated cost=$1,540 · approval_tier=ELEVATED`,
+        kpi: { wo:1 },
+        t: '00:08'
+      },
+      {
+        model: 'PilotCheck',
+        title: `Cost Gate — <span class="hl-yellow">ELEVATED: Site Manager Approval Required</span>`,
+        detail: `$1,540 exceeds foreman authority ($1,500 cap) · awaiting site_manager signature`,
+        kpi: {},
+        t: '00:10'
+      },
+      {
+        model: 'FaultLine',
+        title: `→ Crew Requested: <span class="hl-orange">GMAW_AL_3G + cGMP Clearance</span>`,
+        detail: `dispatching to CrewMatch · requires journeyman or higher · cGMP mandatory`,
+        kpi: {},
+        t: '00:12'
+      },
+      {
+        model: 'CrewMatch',
+        title: `Dispatch: <span class="hl-green">Sam Cruz → WO-2281</span>`,
+        detail: `match=exact · level=journeyman GMAW · cGMP cleared · home_site=Plant 4 · ETA 35min`,
+        kpi: { crew:1 },
+        t: '00:18'
+      },
+      {
+        model: 'SkillForge',
+        title: `Micro-Module Assigned: <span class="hl-blue">Travel Speed Control — GMAW_AL_3G</span>`,
+        detail: `3hr VR sim · auto-generated from defect event · assigned to Alex Rivera`,
+        kpi: { loops:1 },
+        t: '00:22'
+      },
+      {
+        model: 'PilotCheck',
+        title: `AI Safety Gate: <span class="hl-yellow">Alex Rivera (AWARE) — Co-Sign Required</span>`,
+        detail: `competency below OPERATOR threshold on GMAW_AL_3G · supervisor co-sign before next weld`,
+        kpi: {},
+        t: '00:25'
+      },
+      {
+        model: 'WeldEye',
+        title: `Re-inspection Queued for <span class="hl-orange">WO-2281</span>`,
+        detail: `will verify repair geometry before work order close · auto-capture at completion`,
+        kpi: { loops:1 },
+        t: '00:31'
+      },
+      {
+        model: 'FaultLine',
+        title: `Pattern Check: <span class="hl-green">1st occurrence — this worker / skill combo</span>`,
+        detail: `no escalation triggered · monitoring active · threshold=3 occurrences/30 days`,
+        kpi: {},
+        t: '00:34'
+      },
+    ]
+  },
+  2: {
+    label: 'Material Recall',
+    kpiFinal: { defects:1, wo:1, crew:1, loops:4, cost:21400 },
+    steps: [
+      {
+        model: 'WeldEye',
+        title: `Defect Detected — <span class="hl-red">Clustered Porosity, CRITICAL</span>`,
+        detail: `lot_4471 ER5356 filler · weld params nominal · material cause suspected · score=0.96`,
+        kpi: { defects:1 },
+        t: '00:00'
+      },
+      {
+        model: 'WeldEye',
+        title: `Root Cause: <span class="hl-red">MATERIAL</span> — Contaminated filler lot, not operator`,
+        detail: `Operator deviation: 0% · Process deviation: 2% · Material: 98% attribution`,
+        kpi: { loops:1 },
+        t: '00:04'
+      },
+      {
+        model: 'FaultLine',
+        title: `Work Order <span class="hl-orange">WO-2290</span> — Material Hold + Full Re-inspection`,
+        detail: `priority=CRITICAL · SLA=2hr · est=$13,400 + $8,000 downtime = $21,400 → CAPITAL`,
+        kpi: { wo:1 },
+        t: '00:09'
+      },
+      {
+        model: 'PilotCheck',
+        title: `Cost Gate — <span class="hl-red">CAPITAL: Owner/VP Sign-Off Required</span>`,
+        detail: `$21,400 exceeds all foreman and site-manager authority · board authorization package prepared`,
+        kpi: {},
+        t: '00:11'
+      },
+      {
+        model: 'FaultLine',
+        title: `→ ChainSight: <span class="hl-purple">Flag lot_4471 (Acme Alloys ER5356)</span>`,
+        detail: `contaminated porosity · all jobs using lot_4471 under review · HOLD issued`,
+        kpi: { loops:1 },
+        t: '00:14'
+      },
+      {
+        model: 'ChainSight',
+        title: `Genealogy — <span class="hl-purple">lot_4471 touched: job_2, job_7</span>`,
+        detail: `2 jobs at risk · contain &amp; re-inspect both · hold all remaining lot_4471 stock`,
+        kpi: {},
+        t: '00:19'
+      },
+      {
+        model: 'ChainSight',
+        title: `Cost Exposure — <span class="hl-red">$7,200 (2 jobs × $900 reinspect + 30% rework)</span>`,
+        detail: `ELEVATED tier approval for exposure cost · separate from WO-2290 capital authorization`,
+        kpi: { cost:21400, loops:1 },
+        t: '00:22'
+      },
+      {
+        model: 'ChainSight',
+        title: `Supplier <span class="hl-orange">Acme Alloys: 2nd incident this quarter</span>`,
+        detail: `recommendation: dual-source ER5356 + schedule audit · flagged to procurement`,
+        kpi: {},
+        t: '00:26'
+      },
+      {
+        model: 'FaultLine',
+        title: `→ CrewMatch: <span class="hl-red">Emergency crew — critical material hold</span>`,
+        detail: `full re-inspection of job_2 and job_7 · need 2× GMAW_AL_3G inspectors + cGMP`,
+        kpi: { crew:1 },
+        t: '00:30'
+      },
+      {
+        model: 'ProjectPilot',
+        title: `Schedule Impact — <span class="hl-yellow">job_2 delay 3 days, job_7 delay 1 day</span>`,
+        detail: `critical path updated · downstream milestones shifted · customer notification drafted`,
+        kpi: { loops:1 },
+        t: '00:34'
+      },
+    ]
+  },
+  3: {
+    label: 'Pre-Project Feasibility',
+    kpiFinal: { defects:0, wo:0, crew:1, loops:3, cost:212000 },
+    steps: [
+      {
+        model: 'ProjectPilot',
+        title: `Feasibility Study Initiated — <span class="hl-cyan">Pharma Cleanroom WFI Loop Replacement</span>`,
+        detail: `deadline=6 weeks · scope=orbital TIG, cGMP, ASME BPE 316L SS · budget TBD`,
+        kpi: {},
+        t: '00:00'
+      },
+      {
+        model: 'ProjectPilot',
+        title: `Crew Availability Check — <span class="hl-cyan">ORBITL_WELD_BPE_316L + cGMP Required</span>`,
+        detail: `querying CrewMatch for roster availability weeks 1–6 · checking certifications`,
+        kpi: {},
+        t: '00:05'
+      },
+      {
+        model: 'CrewMatch',
+        title: `Gap Forecast — <span class="hl-red">2 Orbital Welders Short for Week 3</span>`,
+        detail: `available now: 1 cGMP-cleared orbital welder · need 3 at peak · sub-contract or ramp`,
+        kpi: { crew:1, loops:1 },
+        t: '00:10'
+      },
+      {
+        model: 'ChainSight',
+        title: `Material Lead Time — <span class="hl-yellow">316L BPE Tube: 21-day lead</span>`,
+        detail: `on-hand: 60ft · required: 180ft · gap: 120ft → expedite order or pre-fab HQ`,
+        kpi: { loops:1 },
+        t: '00:15'
+      },
+      {
+        model: 'ProjectPilot',
+        title: `Approach 1 — <span class="hl-green">Sequential (Standard): 8 weeks, $187k, LOW risk</span>`,
+        detail: `requires full crew ramp (3 welders) · misses 6-week deadline · conventional sequencing`,
+        kpi: {},
+        t: '00:20'
+      },
+      {
+        model: 'ProjectPilot',
+        title: `Approach 2 — <span class="hl-orange">Parallel Track with HQ Pre-Fab: 6 weeks, $212k, MED risk ★ RECOMMENDED</span>`,
+        detail: `pre-fab spool off-site + parallel on-site prep · meets deadline · cost premium justified`,
+        kpi: {},
+        t: '00:25'
+      },
+      {
+        model: 'ProjectPilot',
+        title: `Approach 3 — <span class="hl-purple">Phased Modular: 10 weeks, $164k, LOW risk</span>`,
+        detail: `lowest cost, lowest risk · misses deadline by 4 weeks · not viable for this project`,
+        kpi: { loops:1 },
+        t: '00:30'
+      },
+      {
+        model: 'PilotCheck',
+        title: `Cost Gate — <span class="hl-red">CAPITAL: $212k → Owner/VP must sign before mobilization</span>`,
+        detail: `board authorization package prepared · AI recommendation noted in audit trail`,
+        kpi: { cost:212000 },
+        t: '00:34'
+      },
+      {
+        model: 'SkillForge',
+        title: `Ramp Plan — <span class="hl-blue">2 welders on ORBITL_WELD_BPE_316L: 18 days to journeyman</span>`,
+        detail: `VR-first (days 1–10) → BPE bench coupon (days 11–15) → mentored live weld (days 16–18)`,
+        kpi: {},
+        t: '00:38'
+      },
+    ]
+  }
+};
+
+// ── Demo state ─────────────────────────────────────────────────────────────
+let currentScenario = 1;
+let runTimeout = null;
+let isRunning = false;
+let stepIndex = 0;
+let startTime = null;
+
+// Speed slider
+const speedSlider = document.getElementById('speed-slider');
+const speedDisplay = document.getElementById('speed-display');
+const speedLabels = ['', 'Slow', 'Moderate', 'Normal', 'Fast', 'Instant'];
+speedSlider.addEventListener('input', () => {
+  speedDisplay.textContent = speedLabels[speedSlider.value];
+});
+
+function getDelay() {
+  // slider 1=slow(2.5s) 2=1.8s 3=1.2s 4=0.7s 5=0.15s
+  const delays = [0, 2500, 1800, 1200, 700, 150];
+  return delays[parseInt(speedSlider.value)];
+}
+
+// ── UI helpers ─────────────────────────────────────────────────────────────
+function selectScenario(num, el) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  currentScenario = num;
+  resetDemo();
+}
+
+function resetDemo() {
+  if (runTimeout) clearTimeout(runTimeout);
+  isRunning = false;
+  stepIndex = 0;
+  kpiState = { defects:0, wo:0, crew:0, loops:0, cost:0 };
+  updateKPIs({});
+  const feed = document.getElementById('activity-feed');
+  feed.innerHTML = '<div class="feed-empty" id="feed-empty">Select a scenario and click <strong>Run Scenario</strong> to see TradesOS in action.</div>';
+  document.getElementById('run-btn').textContent = '▶ Run Scenario';
+}
+
+function runScenario() {
+  if (isRunning) return;
+  const scenario = SCENARIOS[currentScenario];
+  if (!scenario) return;
+
+  isRunning = true;
+  const feed = document.getElementById('activity-feed');
+  const emptyEl = document.getElementById('feed-empty');
+  if (emptyEl) emptyEl.remove();
+
+  document.getElementById('run-btn').textContent = '⏳ Running…';
+
+  function playStep() {
+    if (stepIndex >= scenario.steps.length) {
+      isRunning = false;
+      document.getElementById('run-btn').textContent = '✓ Complete';
+      return;
+    }
+    const step = scenario.steps[stepIndex];
+    stepIndex++;
+
+    // Append row
+    const row = document.createElement('div');
+    row.innerHTML = makeRow(step.model, step.title, step.detail, step.t);
+    feed.appendChild(row.firstElementChild);
+    feed.scrollTop = feed.scrollHeight;
+
+    // Update KPIs
+    if (step.kpi && Object.keys(step.kpi).length > 0) {
+      updateKPIs(step.kpi);
+    }
+
+    runTimeout = setTimeout(playStep, getDelay());
+  }
+
+  playStep();
+}
+
+// ── Speed label init ───────────────────────────────────────────────────────
+speedDisplay.textContent = speedLabels[speedSlider.value];
+
+// ── Smooth scroll for any in-page anchor ──────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
